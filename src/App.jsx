@@ -1,12 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, useLocation, Link, Navigate } from "react-router-dom";
 import { LanguageProvider, useLanguage } from "./i18n/LanguageContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import WhatsAppButton from "./components/WhatsAppButton";
-import Home from "./pages/Home";
-import Product from "./pages/Product";
-import Cart from "./pages/Cart";
+const Home = lazy(() => import("./pages/Home"));
+const Product = lazy(() => import("./pages/Product"));
+const Cart = lazy(() => import("./pages/Cart"));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -49,12 +49,14 @@ function AppContent() {
       <div className="min-h-screen flex flex-col">
         <Navbar cartCount={cartCount} />
         <main className="flex-1">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/collection" element={<Navigate to="/" replace />} />
-            <Route path="/product/:id" element={<Product />} />
-            <Route path="/cart" element={<Cart cart={cart} onUpdateQty={handleUpdateQty} onRemove={handleRemove} />} />
-          </Routes>
+          <Suspense fallback={<div className="min-h-[60vh] animate-pulse bg-[#FDFBF7]" />}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/collection" element={<Navigate to="/" replace />} />
+              <Route path="/product/:id" element={<Product />} />
+              <Route path="/cart" element={<Cart cart={cart} onUpdateQty={handleUpdateQty} onRemove={handleRemove} />} />
+            </Routes>
+          </Suspense>
         </main>
         <Footer />
         <WhatsAppButton />

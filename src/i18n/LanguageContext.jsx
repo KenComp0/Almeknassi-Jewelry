@@ -3,8 +3,17 @@ import { translations } from "./translations";
 
 const LanguageContext = createContext();
 
+const ALLOWED_LANGS = ["fr", "en", "ar"];
+
 export function LanguageProvider({ children }) {
-  const [lang, setLang] = useState(() => localStorage.getItem("lang") || "fr");
+  const [lang, setLang] = useState(() => {
+    const saved = localStorage.getItem("lang");
+    return ALLOWED_LANGS.includes(saved) ? saved : "fr";
+  });
+
+  const setLangSafe = (newLang) => {
+    if (ALLOWED_LANGS.includes(newLang)) setLang(newLang);
+  };
 
   useEffect(() => {
     localStorage.setItem("lang", lang);
@@ -32,7 +41,7 @@ export function LanguageProvider({ children }) {
   };
 
   return (
-    <LanguageContext.Provider value={{ lang, setLang, t, formatPrice, translations }}>
+    <LanguageContext.Provider value={{ lang, setLang: setLangSafe, t, formatPrice, translations }}>
       {children}
     </LanguageContext.Provider>
   );

@@ -16,7 +16,7 @@ export default function ImageGallery({ images, alt }) {
               active === i ? "border-primary" : "border-transparent opacity-70 hover:opacity-100"
             }`}
           >
-            <img src={img} alt={`${alt} ${i + 1}`} className="w-full h-full object-cover" />
+            <img src={img} alt={`${alt} ${i + 1}`} width={88} height={88} loading="lazy" decoding="async" className="w-full h-full object-cover" />
           </button>
         ))}
       </div>
@@ -28,6 +28,11 @@ export default function ImageGallery({ images, alt }) {
             key={active}
             src={images[active]}
             alt={alt}
+            width={800}
+            height={800}
+            loading={active === 0 ? "eager" : "lazy"}
+            fetchPriority={active === 0 ? "high" : undefined}
+            decoding="async"
             initial={{ opacity: 0, scale: 1.02 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}

@@ -1,6 +1,6 @@
 export default function MarbleBackground({ children, className = "" }) {
   return (
-    <div className={`relative overflow-hidden ${className}`}>
+    <div className={`relative overflow-hidden min-h-[520px] ${className}`} style={{ contain: "layout" }}>
       {/* Marble image background */}
       <div
         className="absolute inset-0"

@@ -1,5 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600&display=swap');
 
+/* Fix CLS from font swap - match fallback metrics */
+@font-face {
+  font-family: 'Playfair Display Fallback';
+  src: local('Times New Roman');
+  size-adjust: 105%;
+  ascent-override: 95%;
+  descent-override: 25%;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -16,7 +25,7 @@
     -moz-osx-font-smoothing: grayscale;
   }
   h1,h2,h3,h4 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Playfair Display', 'Playfair Display Fallback', serif;
   }
 }
 
