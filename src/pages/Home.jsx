@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { products } from "../data/products";
 import { useLanguage } from "../i18n/LanguageContext";
 import MarbleBackground from "../components/MarbleBackground";
+import OrderModal from "../components/OrderModal";
 
 export default function Home() {
   const { lang, t, formatPrice } = useLanguage();
@@ -11,25 +13,17 @@ export default function Home() {
   const desc = typeof product.description === "object" ? product.description[lang] : product.description;
   const details = typeof product.details === "object" ? product.details[lang] : product.details;
   const badge = typeof product.badge === "object" ? product.badge[lang] : product.badge;
-
-  const handleWhatsapp = () => {
-    const number = import.meta.env.VITE_WHATSAPP_NUMBER || "212664677347";
-    const msg =
-      lang === "fr"
-        ? `Bonjour Al Meknassi Bijoux! Je souhaite commander:\n\n*${name}* - ${formatPrice(product.price)}`
-        : lang === "ar"
-        ? `مرحبا المكناسي! أرغب في طلب:\n\n*${name}* - ${formatPrice(product.price)}`
-        : `Hello Al Meknassi Jewelry! I would like to order:\n\n*${name}* - ${formatPrice(product.price)}`;
-    window.open(`https://wa.me/${number}?text=${encodeURIComponent(msg)}`, "_blank");
-  };
+  const [activeImg, setActiveImg] = useState(product.images[0]);
+  const [showOrder, setShowOrder] = useState(false);
+  const smallImages = product.landingSmall || product.images.slice(1, 4);
 
   return (
     <MarbleBackground className="min-h-[calc(100vh-72px-200px)]">
-      <div className="container-luxury py-12 md:py-20">
+      <div className="container-luxury pt-[96px] pb-12 md:pt-[112px] md:pb-20">
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4 }}
           className="max-w-5xl mx-auto text-center mb-10"
         >
           <p className="text-xs tracking-[0.3em] uppercase text-[#B8934A]">{t("home.focusedTitle")}</p>
@@ -42,18 +36,30 @@ export default function Home() {
           <p className="text-secondary mt-4 max-w-2xl mx-auto leading-relaxed text-sm">{t("home.focusedSubtitle")}</p>
         </motion.div>
 
-        <div className="max-w-5xl mx-auto bg-white/80 backdrop-blur-xl border border-white/50 shadow-[0_20px_60px_rgba(201,168,106,0.15)] overflow-hidden rounded-2xl">
+        <div className="max-w-5xl mx-auto bg-white/80 backdrop-blur-xl border border-white/50 shadow-[0_20px_60px_rgba(201,168,106,0.15)] overflow-hidden rounded-2xl min-h-[680px] md:min-h-[620px]" style={{ contain: "layout" }}>
           <div className="grid grid-cols-1 lg:grid-cols-2">
-            {/* Images - rounded, hover zoom */}
+            {/* Images - 1 main + 3 small, hover WhatsApp */}
             <div className="relative bg-white p-4 md:p-6">
-              <div className="aspect-square overflow-hidden bg-[#FDFBF7] rounded-2xl product-image">
-                <img src={product.images[0]} alt={name} className="w-full h-full object-cover" />
+              <div className="aspect-square overflow-hidden bg-[#FDFBF7] rounded-2xl product-image group relative">
+                <img src={activeImg} alt={name} width={800} height={800} loading="eager" fetchPriority="high" decoding="async" className="w-full h-full object-cover" />
+                {/* Hover WhatsApp button */}
+                <button
+                  onClick={() => setShowOrder(true)}
+                  className="absolute bottom-3 left-3 bg-white/95 backdrop-blur border border-black/10 text-black px-4 py-2 text-xs font-medium tracking-widest uppercase rounded-full shadow-md opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all flex items-center gap-2 hover:bg-black hover:text-white"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="text-[#25D366]"><path d="M19.05 4.91A9.9 9.9 0 0 0 12.02 2C6.54 2 2.08 6.46 2.08 11.94c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.77 1.22h.01c5.48 0 9.94-4.46 9.94-9.94 0-2.65-1.03-5.14-2.92-7.03z"/></svg>
+                  {t("home.orderWhatsapp")}
+                </button>
               </div>
               <div className="grid grid-cols-3 gap-3 mt-3">
-                {product.images.slice(1, 4).map((img, i) => (
-                  <div key={i} className="aspect-square overflow-hidden bg-[#FDFBF7] border border-white rounded-xl product-image">
-                    <img src={img} alt="" className="w-full h-full object-cover opacity-90" />
-                  </div>
+                {smallImages.map((img, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActiveImg(img)}
+                    className={`aspect-square overflow-hidden bg-[#FDFBF7] border rounded-xl product-image ${activeImg === img ? "border-primary" : "border-white"}`}
+                  >
+                    <img src={img} alt="" width={400} height={400} loading="lazy" decoding="async" className="w-full h-full object-cover" />
+                  </button>
                 ))}
               </div>
               {badge && (
@@ -85,12 +91,8 @@ export default function Home() {
                 )}
               </div>
 
-              <p className="leading-relaxed mt-5 text-[14px]" style={{ color: "#555" }}>
-                {lang === "fr"
-                  ? "Bracelet trèfle élégant en plaqué or 18k. Hypoallergénique, résistant à l'eau, pour un éclat intemporel."
-                  : lang === "ar"
-                  ? "سوار برسيم أنيق مطلي ذهب 18. مضاد للحساسية، مقاوم للماء، لمعان خالد."
-                  : "Elegant four-leaf clover bracelet in 18k gold plating. Hypoallergenic, water-resistant, designed for timeless wear."}
+              <p className="leading-relaxed mt-5 text-[14px] whitespace-pre-line" style={{ color: "#555" }}>
+                {desc}
               </p>
               <p className="text-xs mt-3 border-l-2 border-[#C9A86A] pl-3" style={{ color: "#888" }}>
                 {details}
@@ -98,17 +100,17 @@ export default function Home() {
 
               <div className="mt-auto pt-8 space-y-3">
                 <button
-                  onClick={handleWhatsapp}
+                  onClick={() => setShowOrder(true)}
                   className="w-full bg-black text-white py-4 text-sm font-medium tracking-[0.14em] uppercase hover:bg-[#1a1a1a] transition-colors flex items-center justify-center gap-2 rounded-full shadow-[0_8px_24px_rgba(0,0,0,0.15)]"
                 >
                   {lang === "fr" ? "Commander Maintenant" : lang === "ar" ? "اطلب الآن" : "Buy Now"} — {formatPrice(product.price)}
                 </button>
                 <button
-                  onClick={handleWhatsapp}
+                  onClick={() => setShowOrder(true)}
                   className="w-full bg-white border border-black text-black py-3.5 text-sm font-medium tracking-[0.12em] uppercase hover:bg-black hover:text-white transition-colors flex items-center justify-center gap-2 rounded-full"
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="text-[#25D366]">
-                    <path d="M19.05 4.91A9.9 9.9 0 0 0 12.02 2C6.54 2 2.08 6.46 2.08 11.94c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.77 1.22h.01c5.48 0 9.94-4.46 9.94-9.94 0-2.65-1.03-5.14-2.92-7.03zm-7.03 15.2h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.11.82.83-3.03-.2-.31a8.27 8.27 0 0 1-1.27-4.32c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.26.86 5.81 2.41a8.17 8.17 0 0 1 2.41 5.82c0 4.55-3.7 8.25-8.24 8.25zm6.74-6.19c-.37-.19-2.21-1.09-2.55-1.21-.34-.12-.59-.19-.84.19-.25.37-.97 1.21-1.19 1.46-.22.25-.45.28-.82.09-.37-.19-1.57-.58-3-1.86-1.11-.99-1.86-2.21-2.08-2.58-.22-.37-.02-.57.16-.76.16-.16.37-.42.56-.63.19-.2.25-.34.37-.57.12-.22.06-.42-.03-.6-.09-.19-.84-2.01-1.15-2.75-.3-.72-.61-.62-.84-.63l-.72-.01c-.25 0-.66.09-1 .45-.34.37-1.31 1.28-1.31 3.13s1.34 3.63 1.53 3.88c.19.25 2.65 4.05 6.42 5.68.9.39 1.6.62 2.15.79.9.29 1.72.25 2.37.15.72-.11 2.21-.9 2.53-1.78.31-.87.31-1.62.22-1.78-.09-.16-.34-.25-.71-.44z" />
+                    <path d="M19.05 4.91A9.9 9.9 0 0 0 12.02 2C6.54 2 2.08 6.46 2.08 11.94c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.77 1.22h.01c5.48 0 9.94-4.46 9.94-9.94 0-2.65-1.03-5.14-2.92-7.03z" />
                   </svg>
                   {t("home.orderWhatsapp")}
                 </button>
@@ -130,6 +132,7 @@ export default function Home() {
           {lang === "fr" ? "Paiement à la livraison • Livraison partout au Maroc" : lang === "ar" ? "الدفع عند الاستلام • التوصيل في جميع أنحاء المغرب" : "Cash on delivery • Delivery all over Morocco"}
         </p>
       </div>
+      <OrderModal isOpen={showOrder} onClose={() => setShowOrder(false)} product={product} qty={1} />
       <style>{`.product-image{transition:transform 0.4s ease}.product-image:hover{transform:scale(1.03)}`}</style>
     </MarbleBackground>
   );

@@ -1,11 +1,11 @@
 export default function MarbleBackground({ children, className = "" }) {
   return (
-    <div className={`relative overflow-hidden ${className}`}>
+    <div className={`relative overflow-hidden min-h-[520px] ${className}`} style={{ contain: "layout" }}>
       {/* Marble image background */}
       <div
         className="absolute inset-0"
         style={{
-          backgroundImage: "url('https://i.ibb.co/fVXTHn7M/logan-voss-Jp-NKV9-a-Om4-unsplash.jpg')",
+          backgroundImage: "url('/images/marble-bg.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",

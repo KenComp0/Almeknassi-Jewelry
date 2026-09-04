@@ -4,7 +4,7 @@ import { useLanguage } from "../i18n/LanguageContext";
 export default function Footer() {
   const { t } = useLanguage();
   return (
-    <footer className="bg-[#F9F9F7] border-t border-border">
+    <footer className="bg-[#F9F9F7] border-t border-border min-h-[380px]" style={{ contain: "layout", contentVisibility: "auto", containIntrinsicSize: "380px" }}>
       {/* Trust bar */}
       <div className="border-b border-border bg-white">
         <div className="container-luxury grid grid-cols-2 md:grid-cols-4 gap-8 py-8 text-center">
@@ -67,7 +67,16 @@ export default function Footer() {
               alt="Al Meknassi Bijoux"
               className="h-[64px] w-auto object-contain mx-auto md:ml-auto md:mr-0"
             />
-            <p className="text-sm text-secondary mt-4 leading-relaxed" dangerouslySetInnerHTML={{ __html: t("footer.brandDesc") }} />
+            <p className="text-sm text-secondary mt-4 leading-relaxed">
+              {t("footer.brandDesc")
+                .split("<br/>")
+                .map((part, i, arr) => (
+                  <span key={i}>
+                    {part}
+                    {i < arr.length - 1 && <br />}
+                  </span>
+                ))}
+            </p>
             <div className="flex gap-3 mt-6 justify-center md:justify-end">
               <SocialLink href="https://www.instagram.com/almeknassi1?igsi=ZDNlZDc0MzIxNw==">
                 <InstagramIcon />
