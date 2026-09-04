@@ -37,7 +37,6 @@ export default function Footer() {
                   </a>
                 </span>
               </p>
-              <p>{t("footer.email")}: simobouki198@gmail.com</p>
               <p>
                 {t("footer.hours")}: {t("footer.open")}
               </p>
@@ -70,10 +69,10 @@ export default function Footer() {
             />
             <p className="text-sm text-secondary mt-4 leading-relaxed" dangerouslySetInnerHTML={{ __html: t("footer.brandDesc") }} />
             <div className="flex gap-3 mt-6 justify-center md:justify-end">
-              <SocialLink href="#">
+              <SocialLink href="https://www.instagram.com/almeknassi1?igsi=ZDNlZDc0MzIxNw==">
                 <InstagramIcon />
               </SocialLink>
-              <SocialLink href="#">
+              <SocialLink href="https://www.facebook.com/share/195AwDmTGq/">
                 <FacebookIcon />
               </SocialLink>
               <SocialLink href="#">
@@ -113,9 +112,12 @@ function TrustItem({ icon, title, subtitle }) {
   );
 }
 function SocialLink({ children, href }) {
+  const isExternal = href.startsWith("http");
   return (
     <a
       href={href}
+      target={isExternal ? "_blank" : undefined}
+      rel={isExternal ? "noopener noreferrer" : undefined}
       className="w-9 h-9 border border-border flex items-center justify-center hover:border-primary hover:bg-primary hover:text-white transition-all text-secondary"
     >
       {children}
