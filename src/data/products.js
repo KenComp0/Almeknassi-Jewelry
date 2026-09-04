@@ -1,4 +1,4 @@
-// Production images - single focused product (Alhambra/ Cuban link set)
+// Production images - ImgBB URLs (host-free, no Netlify bandwidth)
 export const products = [
   {
     id: "1",
@@ -7,26 +7,24 @@ export const products = [
       en: "Golden Cuban Alhambra Set",
       ar: "طقم كوبي الحمراء الذهبي",
     },
-    price: 279.0, // MAD - Owner offer: 279 DH only
+    price: 279.0,
     originalPrice: 450.0,
     category: "parure",
-    // Order as provided: main + all gallery - local for supply-chain security
     images: [
-      "/images/1-braclet.png",
-      "/images/1-small-bracelet.png",
-      "/images/golden-bracely.png",
-      "/images/tiny.png",
-      "/images/4-bracelet-in-the-box.png",
-      "/images/4-braclet.png",
-      "/images/displayed.png",
-      "/images/connections-small.png",
-      "/images/box.png",
+      "https://i.ibb.co/nNNc55w4/1-braclet.png",
+      "https://i.ibb.co/0VdTgBjC/1-small-bracelet.png",
+      "https://i.ibb.co/wZfhM1bJ/golden-bracely.png",
+      "https://i.ibb.co/XZ7sCwzt/tiny.png",
+      "https://i.ibb.co/CKXHbw35/4-bracelet-in-the-box.png",
+      "https://i.ibb.co/sv07kp9v/4-braclet.png",
+      "https://i.ibb.co/j948bx2C/displayed.png",
+      "https://i.ibb.co/dwkXCvYv/connections-small.png",
+      "https://i.ibb.co/TD7xtFFx/box.png",
     ],
-    // Landing uses first 1 + 3 small
     landingSmall: [
-      "/images/1-small-bracelet.png",
-      "/images/golden-bracely.png",
-      "/images/tiny.png",
+      "https://i.ibb.co/0VdTgBjC/1-small-bracelet.png",
+      "https://i.ibb.co/wZfhM1bJ/golden-bracely.png",
+      "https://i.ibb.co/XZ7sCwzt/tiny.png",
     ],
     description: {
       fr: "✨ Le luxe de l'or dans chaque détail… Un coffret raffiné qui attire les regards dès le premier coup d'œil.\n\n💎 Une qualité durable, un éclat exceptionnel et un design parfaitement assorti pour une élégance inoubliable.\n\n👑 Ne vous contentez pas d'un joli bijou… Choisissez un coffret qui vous fera vous sentir vraiment unique, et commandez-le dès maintenant.",
@@ -48,7 +46,7 @@ export const products = [
 ];
 
 export const categories = [
-  { id: "parure", name: { fr: "Parure", en: "Set", ar: "طقم" }, image: "/images/1-braclet.png", count: 1 },
+  { id: "parure", name: { fr: "Parure", en: "Set", ar: "طقم" }, image: "https://i.ibb.co/nNNc55w4/1-braclet.png", count: 1 },
 ];
 
 export const featuredProducts = products;

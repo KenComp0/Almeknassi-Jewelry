@@ -5,7 +5,7 @@ export default function MarbleBackground({ children, className = "" }) {
       <div
         className="absolute inset-0"
         style={{
-          backgroundImage: "url('/images/marble-bg.jpg')",
+          backgroundImage: "url('https://i.ibb.co/fVXTHn7M/logan-voss-Jp-NKV9-a-Om4-unsplash.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",

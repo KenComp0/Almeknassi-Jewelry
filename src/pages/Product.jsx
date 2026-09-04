@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import { motion } from "framer-motion";
 import { products } from "../data/products";
 import { useLanguage } from "../i18n/LanguageContext";
 import OrderModal from "../components/OrderModal";
@@ -11,8 +12,12 @@ export default function Product() {
   const name = typeof product.name === "object" ? product.name[lang] : product.name;
   const [showOrder, setShowOrder] = useState(false);
   const [showSticky, setShowSticky] = useState(false);
+  const [isHeroCompact, setIsHeroCompact] = useState(false);
   useEffect(() => {
-    const onScroll = () => setShowSticky(window.scrollY > 600);
+    const onScroll = () => {
+      setShowSticky(window.scrollY > 600);
+      setIsHeroCompact(window.scrollY > 80);
+    };
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -147,25 +152,34 @@ export default function Product() {
   }[lang];
 
   const img = {
-    heroFull: "/images/4-braclet.png",
-    videoPoster: "/images/4-bracelet-in-the-box.png",
-    chain: "/images/1-braclet.png",
-    clasp: "/images/golden-bracely.png",
-    bust: "/images/displayed.png",
-    ring: "/images/tiny.png",
-    earrings: "/images/connections-small.png",
-    boxFull: "/images/4-bracelet-in-the-box.png",
+    heroFull: product.images[5],
+    videoPoster: product.images[4],
+    chain: product.images[0],
+    clasp: product.images[2],
+    bust: product.images[6],
+    ring: product.images[3],
+    earrings: product.images[7],
+    boxFull: product.images[4],
   };
 
   return (
     <div className="bg-white">
-      {/* 1️⃣ HERO - tighter crop 4:5 */}
+      {/* 1️⃣ HERO - full screen then animates to card on scroll */}
       <section className="relative bg-white">
-        <div className="w-full max-w-5xl mx-auto">
-          <div className="aspect-[4/5] md:aspect-[16/10] max-h-[75vh] overflow-hidden rounded-2xl mx-4 md:mx-0">
+        <motion.div
+          initial={false}
+          animate={{
+            borderRadius: isHeroCompact ? 16 : 0,
+            scale: isHeroCompact ? 0.98 : 1,
+          }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          className={`mx-auto overflow-hidden ${isHeroCompact ? "max-w-5xl rounded-2xl mx-4 md:mx-auto" : "max-w-none w-full rounded-none"}`}
+          style={{ willChange: "transform, border-radius" }}
+        >
+          <div className={`w-full overflow-hidden ${isHeroCompact ? "aspect-[4/5] md:aspect-[16/10] max-h-[75vh] rounded-2xl" : "h-[100vh] max-h-[100vh] rounded-none"}`}>
             <img src={img.heroFull} alt={name} className="w-full h-full object-cover object-center" width={1200} height={900} loading="eager" fetchPriority="high" decoding="async" />
           </div>
-        </div>
+        </motion.div>
         <div className="container-luxury py-6 text-center" dir={lang === "ar" ? "rtl" : "ltr"}>
           <h1 className="font-playfair text-2xl md:text-3xl leading-tight" style={{ fontFamily: "'Playfair Display', serif", fontWeight: 500 }}>{tFunnel.sec1_title}</h1>
           <p className="text-secondary mt-3 max-w-2xl mx-auto text-sm leading-relaxed">{tFunnel.sec1_desc}</p>
