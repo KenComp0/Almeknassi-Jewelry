@@ -4,6 +4,7 @@ import { LanguageProvider, useLanguage } from "./i18n/LanguageContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import WhatsAppButton from "./components/WhatsAppButton";
+import MobileBottomNav from "./components/MobileBottomNav";
 import LanguageSplash from "./components/LanguageSplash";
 const Home = lazy(() => import("./pages/Home"));
 const Product = lazy(() => import("./pages/Product"));
@@ -23,7 +24,7 @@ function CartToast({ cart, cartCount }) {
   return (
     <Link
       to="/cart"
-      className="fixed bottom-6 right-6 z-40 bg-primary text-white text-sm px-5 py-3 shadow-luxury flex items-center gap-3 hover:bg-black transition-colors"
+      className="fixed bottom-24 md:bottom-6 right-6 z-40 bg-primary text-white text-sm px-5 py-3 shadow-luxury flex items-center gap-3 hover:bg-black transition-colors"
     >
       <span>Panier: {cartCount}</span>
       <span className="text-white/60">|</span>
@@ -68,7 +69,10 @@ function AppContent() {
           </Suspense>
         </main>
         <Footer />
+        {/* Spacer so mobile bottom nav never covers footer content */}
+        <div className="h-[76px] md:hidden" aria-hidden="true" />
         <WhatsAppButton />
+        <MobileBottomNav />
         <CartToast cart={cart} cartCount={cartCount} />
       </div>
     </BrowserRouter>

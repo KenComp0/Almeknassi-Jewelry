@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Section from "../components/Section";
@@ -17,6 +17,12 @@ export default function Cart({ cart, onUpdateQty, onRemove }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleWhatsAppOrder = () => setShowOrder(true);
+
+  useEffect(() => {
+    const open = () => setShowOrder(true);
+    window.addEventListener("open-order", open);
+    return () => window.removeEventListener("open-order", open);
+  }, []);
 
   const validate = () => {
     const e = {};

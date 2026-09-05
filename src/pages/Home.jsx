@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { products } from "../data/products";
@@ -16,6 +16,12 @@ export default function Home() {
   const [activeImg, setActiveImg] = useState(product.images[0]);
   const [showOrder, setShowOrder] = useState(false);
   const smallImages = product.landingSmall || product.images.slice(1, 4);
+
+  useEffect(() => {
+    const open = () => setShowOrder(true);
+    window.addEventListener("open-order", open);
+    return () => window.removeEventListener("open-order", open);
+  }, []);
 
   return (
     <div

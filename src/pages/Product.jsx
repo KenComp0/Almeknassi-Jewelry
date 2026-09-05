@@ -18,6 +18,12 @@ export default function Product() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    const open = () => setShowOrder(true);
+    window.addEventListener("open-order", open);
+    return () => window.removeEventListener("open-order", open);
+  }, []);
+
   const tFunnel = {
     fr: {
       sec1_title: "Le luxe de la brillance dorée dans chaque détail",
@@ -324,7 +330,7 @@ export default function Product() {
       <OrderModal isOpen={showOrder} onClose={() => setShowOrder(false)} product={product} qty={1} />
 
       {/* Floating right Cart + Commander ici - always shown (like WhatsApp left) */}
-      <div className="fixed bottom-5 right-5 z-40 flex flex-col items-center gap-1.5">
+      <div className="fixed bottom-24 md:bottom-5 right-5 z-40 flex flex-col items-center gap-1.5">
         <button
           onClick={() => setShowOrder(true)}
           aria-label="Commander"
