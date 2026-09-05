@@ -4,6 +4,7 @@ import { LanguageProvider, useLanguage } from "./i18n/LanguageContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import WhatsAppButton from "./components/WhatsAppButton";
+import LanguageSplash from "./components/LanguageSplash";
 const Home = lazy(() => import("./pages/Home"));
 const Product = lazy(() => import("./pages/Product"));
 const Cart = lazy(() => import("./pages/Cart"));
@@ -34,6 +35,8 @@ function CartToast({ cart, cartCount }) {
 
 function AppContent() {
   const [cart, setCart] = useState([]);
+  const { setLang } = useLanguage();
+  const [showSplash, setShowSplash] = useState(true);
 
   const handleUpdateQty = (id, newQty) => {
     setCart((prev) => prev.map((p) => (p.id === id ? { ...p, qty: newQty } : p)));
@@ -43,13 +46,19 @@ function AppContent() {
   };
   const cartCount = cart.reduce((sum, p) => sum + p.qty, 0);
 
+  const handleSelectLang = (code) => {
+    setLang(code);
+    setTimeout(() => setShowSplash(false), 400);
+  };
+
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <LanguageSplash show={showSplash} onSelect={handleSelectLang} />
       <div className="min-h-screen flex flex-col">
         <Navbar cartCount={cartCount} />
         <main className="flex-1">
-          <Suspense fallback={<div className="min-h-[60vh] animate-pulse bg-[#FDFBF7]" />}>
+          <Suspense fallback={<div className="min-h-[60vh] animate-pulse bg-[#0A0A0A]" />}>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/collection" element={<Navigate to="/" replace />} />

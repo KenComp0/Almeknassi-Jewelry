@@ -18,25 +18,34 @@ export default function Home() {
   const smallImages = product.landingSmall || product.images.slice(1, 4);
 
   return (
-    <MarbleBackground className="min-h-[calc(100vh-72px-200px)]">
-      <div className="container-luxury pt-[96px] pb-12 md:pt-[112px] md:pb-20">
+    <div
+      className="relative text-white min-h-[calc(100vh-72px-200px)]"
+      style={{
+        backgroundImage: "url('https://i.ibb.co/WvCp9WYL/Chat-GPT-Image-Sep-5-2026-09-59-51-PM.webp')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      <div className="absolute inset-0 bg-black/70" />
+      <div className="relative z-10 container-luxury pt-[96px] pb-12 md:pt-[112px] md:pb-20">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4 }}
           className="max-w-5xl mx-auto text-center mb-10"
         >
-          <p className="text-xs tracking-[0.3em] uppercase text-[#B8934A]">{t("home.focusedTitle")}</p>
+          <p className="text-xs tracking-[0.3em] uppercase text-[#C9A86A]">{t("home.focusedTitle")}</p>
           <h1
-            className="font-playfair mt-3 leading-[1.1] text-primary"
+            className="font-playfair mt-3 leading-[1.1] text-[#C9A86A]"
             style={{ fontFamily: "'Playfair Display', serif", fontSize: "40px", fontWeight: 500, letterSpacing: "-0.5px" }}
           >
             {name}
           </h1>
-          <p className="text-secondary mt-4 max-w-2xl mx-auto leading-relaxed text-sm">{t("home.focusedSubtitle")}</p>
+          <p className="text-white/70 mt-4 max-w-2xl mx-auto leading-relaxed text-sm">{t("home.focusedSubtitle")}</p>
         </motion.div>
 
-        <div className="max-w-5xl mx-auto bg-white/80 backdrop-blur-xl border border-white/50 shadow-[0_20px_60px_rgba(201,168,106,0.15)] overflow-hidden rounded-2xl min-h-[680px] md:min-h-[620px]" style={{ contain: "layout" }}>
+        <div className="max-w-5xl mx-auto bg-[#111] border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden rounded-2xl min-h-[680px] md:min-h-[620px]" style={{ contain: "layout" }}>
           <div className="grid grid-cols-1 lg:grid-cols-2">
             {/* Images - 1 main + 3 small, hover WhatsApp */}
             <div className="relative bg-white p-4 md:p-6">
@@ -69,32 +78,32 @@ export default function Home() {
               )}
             </div>
 
-            {/* Info - 40px padding */}
+            {/* Info - 40px padding - dark */}
             <div className="flex flex-col rounded-2xl" style={{ padding: "40px" }}>
-              <p className="text-[11px] tracking-[0.18em] uppercase text-[#B8934A]">{product.category}</p>
+              <p className="text-[11px] tracking-[0.18em] uppercase text-[#C9A86A]">{product.category}</p>
               <h2
-                className="font-playfair mt-2 leading-[1.1] text-primary"
+                className="font-playfair mt-2 leading-[1.1] text-white"
                 style={{ fontFamily: "'Playfair Display', serif", fontSize: "40px", fontWeight: 500, letterSpacing: "-0.5px" }}
               >
                 {name}
               </h2>
-              <div className="flex items-center gap-3 mt-3" style={{ fontSize: "12px", color: "#888" }}>
+              <div className="flex items-center gap-3 mt-3" style={{ fontSize: "12px", color: "#9A9A9A" }}>
                 <span className="flex text-[#C9A86A]">★★★★★</span>
                 <span>(127 {t("product.reviews")})</span>
-                <span className="px-2 py-0.5 bg-green-50 text-green-700 border border-green-200 text-[11px]">{t("product.inStock")}</span>
+                <span className="px-2 py-0.5 bg-green-900/30 text-green-400 border border-green-800 text-[11px]">{t("product.inStock")}</span>
               </div>
 
               <div className="flex items-center gap-3 mt-6">
-                <span className="text-2xl font-semibold text-black">{formatPrice(product.price)}</span>
+                <span className="text-2xl font-semibold text-white">{formatPrice(product.price)}</span>
                 {product.originalPrice && (
-                  <span className="text-gray-400 line-through text-sm">{formatPrice(product.originalPrice)}</span>
+                  <span className="text-white/40 line-through text-sm">{formatPrice(product.originalPrice)}</span>
                 )}
               </div>
 
-              <p className="leading-relaxed mt-5 text-[14px] whitespace-pre-line" style={{ color: "#555" }}>
+              <p className="leading-relaxed mt-5 text-[14px] whitespace-pre-line text-white/80">
                 {desc}
               </p>
-              <p className="text-xs mt-3 border-l-2 border-[#C9A86A] pl-3" style={{ color: "#888" }}>
+              <p className="text-xs mt-3 border-l-2 border-[#C9A86A] pl-3 text-white/50">
                 {details}
               </p>
 
@@ -116,9 +125,9 @@ export default function Home() {
                 </button>
                 <Link
                   to={`/product/${product.id}`}
-                  className="w-full bg-[#D4AF37] text-black py-3 text-xs tracking-widest uppercase hover:bg-[#C9A86A] transition-colors flex items-center justify-center rounded-full"
+                  className="w-full bg-[#D4AF37] text-black py-3 text-xs tracking-widest uppercase hover:bg-[#C9A86A] transition-colors flex items-center justify-center gap-2 rounded-full"
                 >
-                  {t("home.viewProduct")} →
+                  {t("home.viewProduct")} <img src="https://i.ibb.co/MDV7Wbfn/arrow-right.png" alt="" width="14" height="14" loading="lazy" decoding="async" className="w-[14px] h-[14px] object-contain" />
                 </Link>
                 <p className="text-xs text-center" style={{ color: "#888" }}>
                   ✓ {t("product.freeShipping")} • {t("cart.cashOnDelivery")}
@@ -128,12 +137,12 @@ export default function Home() {
           </div>
         </div>
 
-        <p className="text-center text-xs text-secondary/60 mt-6">
+        <p className="text-center text-xs text-white/40 mt-6">
           {lang === "fr" ? "Paiement à la livraison • Livraison partout au Maroc" : lang === "ar" ? "الدفع عند الاستلام • التوصيل في جميع أنحاء المغرب" : "Cash on delivery • Delivery all over Morocco"}
         </p>
       </div>
       <OrderModal isOpen={showOrder} onClose={() => setShowOrder(false)} product={product} qty={1} />
       <style>{`.product-image{transition:transform 0.4s ease}.product-image:hover{transform:scale(1.03)}`}</style>
-    </MarbleBackground>
+    </div>
   );
 }

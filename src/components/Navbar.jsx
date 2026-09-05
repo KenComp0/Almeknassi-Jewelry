@@ -68,9 +68,9 @@ export default function Navbar({ cartCount = 0, wishlistCount = 0 }) {
           </div>
         </button>
 
-        {/* Logo - visible only on small devices */}
+        {/* Logo - visible only on small devices - 50% bigger then 25% smaller = 47px */}
         <Link to="/" className="absolute left-1/2 -translate-x-1/2 md:hidden flex items-center justify-center">
-          <img src="/logo.svg" alt="Al Meknassi Bijoux" className="h-[42px] w-auto object-contain" />
+          <img src="/logo.svg" alt="Al Meknassi Bijoux" className="h-[47px] w-auto object-contain" />
         </Link>
 
         {/* Center nav - desktop */}
@@ -178,19 +178,12 @@ export default function Navbar({ cartCount = 0, wishlistCount = 0 }) {
 
 function CartIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
-      <path d="M6 6h15l-1.5 9h-13z" />
-      <path d="M6 6L5 2H2" />
-      <circle cx="9" cy="20" r="1.5" />
-      <circle cx="18" cy="20" r="1.5" />
-    </svg>
+    <img src="https://i.ibb.co/3YFkMMsw/shopping-cart.png" alt="cart" width="18" height="18" loading="lazy" decoding="async" className="w-[18px] h-[18px] object-contain" />
   );
 }
 function HeartIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
-      <path d="M12 21s-6.5-4.2-8.5-8.2A5 5 0 0 1 12 7a5 5 0 0 1 8.5 5.8C18.5 16.8 12 21 12 21z" />
-    </svg>
+    <img src="https://i.ibb.co/wrrQNmHr/heart.png" alt="wishlist" width="18" height="18" loading="lazy" decoding="async" className="w-[18px] h-[18px] object-contain" />
   );
 }
 function UserIcon() {
@@ -203,9 +196,6 @@ function UserIcon() {
 }
 function SearchIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
-      <circle cx="11" cy="11" r="7" />
-      <path d="M20 20l-3.5-3.5" />
-    </svg>
+    <img src="https://i.ibb.co/wZn6QMk2/search.png" alt="search" width="18" height="18" loading="lazy" decoding="async" className="w-[18px] h-[18px] object-contain" />
   );
 }

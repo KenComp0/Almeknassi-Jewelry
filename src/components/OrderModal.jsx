@@ -164,7 +164,7 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
               </div>
 
               <div className="mt-5 bg-[#FDFBF7] border border-[#E8D5B5] rounded-xl p-3 flex gap-3">
-                <img src={product.images[0]} alt={name} className="w-16 h-16 object-cover rounded-lg border border-white" />
+                <img src="https://i.ibb.co/j948bx2C/displayed.png" alt={name} className="w-16 h-16 object-contain bg-white rounded-lg border border-white p-1" />
                 <div className="flex-1 min-w-0">
                   <p className="text-xs tracking-widest uppercase text-[#B8934A]">{product.category}</p>
                   <p className="font-medium text-sm leading-tight truncate">{name}</p>

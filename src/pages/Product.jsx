@@ -11,13 +11,9 @@ export default function Product() {
   const product = products.find((p) => p.id === (id || "1")) || products[0];
   const name = typeof product.name === "object" ? product.name[lang] : product.name;
   const [showOrder, setShowOrder] = useState(false);
-  const [showSticky, setShowSticky] = useState(false);
   const [isHeroCompact, setIsHeroCompact] = useState(false);
   useEffect(() => {
-    const onScroll = () => {
-      setShowSticky(window.scrollY > 600);
-      setIsHeroCompact(window.scrollY > 80);
-    };
+    const onScroll = () => setIsHeroCompact(window.scrollY > 80);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -48,12 +44,11 @@ export default function Product() {
       sec8_desc: "Ton ensemble arrive dans un coffret luxueux et élégant, qui garde les pièces rangées et en fait un cadeau idéal pour toi ou un proche.",
       sec8_list: "Collier + Bracelet + Bague + Boucles + Coffret",
       sec9: [
-        { Icon: DropletIcon, title: "Résistant à l'eau" },
-        { Icon: LeafIcon, title: "Peau sensible" },
-        { Icon: SparkleIcon, title: "Résistant sueur & parfum" },
-        { Icon: ShieldIcon, title: "Garantie 2 ans" },
-        { Icon: TruckIcon, title: "Livraison partout au Maroc" },
-        { Icon: CashIcon, title: "Paiement à la livraison" },
+        { Icon: DiamondIcon, title: "Qualité premium", sub: "Acier inoxydable A+" },
+        { Icon: ShieldIcon, title: "Garantie 2 ans", sub: "Satisfaction assurée" },
+        { Icon: DropletIcon, title: "Résiste à l'eau", sub: "Parfums & transpiration" },
+        { Icon: LeafIcon, title: "Hypoallergénique", sub: "Pour peaux sensibles" },
+        { Icon: GiftIcon, title: "Coffret élégant", sub: "Prêt à offrir" },
       ],
       sec10_title: "Essaie sans inquiétude",
       sec10_desc: "Tu n'as rien à payer d'avance.",
@@ -90,12 +85,11 @@ export default function Product() {
       sec8_desc: "Your set comes in a luxurious elegant box, keeping pieces organized and perfect as a gift.",
       sec8_list: "Necklace + Bracelet + Ring + Earrings + Box",
       sec9: [
-        { Icon: DropletIcon, title: "Water resistant" },
-        { Icon: LeafIcon, title: "Sensitive skin" },
-        { Icon: SparkleIcon, title: "Sweat & perfume resistant" },
-        { Icon: ShieldIcon, title: "2-year warranty" },
-        { Icon: TruckIcon, title: "Delivery all over Morocco" },
-        { Icon: CashIcon, title: "Cash on delivery" },
+        { Icon: DiamondIcon, title: "Premium quality", sub: "Stainless steel A+" },
+        { Icon: ShieldIcon, title: "2-year warranty", sub: "Satisfaction guaranteed" },
+        { Icon: DropletIcon, title: "Water resistant", sub: "Perfumes & sweat" },
+        { Icon: LeafIcon, title: "Hypoallergenic", sub: "For sensitive skin" },
+        { Icon: GiftIcon, title: "Elegant box", sub: "Ready to gift" },
       ],
       sec10_title: "Try without worry",
       sec10_desc: "You pay nothing in advance.",
@@ -132,12 +126,11 @@ export default function Product() {
       sec8_desc: "طقمك يأتي داخل علبة فاخرة وأنيقة، تحافظ على ترتيب القطع وتجعله خيارًا مثاليًا لكِ أو كهدية لمن تحبين.",
       sec8_list: "السلسلة + السوار + الخاتم + الأقراط + العلبة",
       sec9: [
-        { Icon: DropletIcon, title: "مقاوم للماء" },
-        { Icon: LeafIcon, title: "مناسب للبشرة الحساسة" },
-        { Icon: SparkleIcon, title: "مقاوم للعرق والعطر" },
-        { Icon: ShieldIcon, title: "ضمان لمدة سنتين" },
-        { Icon: TruckIcon, title: "التوصيل لجميع أنحاء المغرب" },
-        { Icon: CashIcon, title: "الدفع عند الاستلام" },
+        { Icon: DiamondIcon, title: "جودة ممتازة", sub: "ستانلس ستيل A+" },
+        { Icon: ShieldIcon, title: "ضمان سنتين", sub: "رضا مضمون" },
+        { Icon: DropletIcon, title: "مقاوم للماء", sub: "عطور وعرق" },
+        { Icon: LeafIcon, title: "مضاد للحساسية", sub: "للبشرة الحساسة" },
+        { Icon: GiftIcon, title: "علبة أنيقة", sub: "جاهزة للإهداء" },
       ],
       sec10_title: "جربي الشراء بدون قلق",
       sec10_desc: "لا تحتاجين إلى دفع أي شيء مسبقًا.",
@@ -163,158 +156,157 @@ export default function Product() {
   };
 
   return (
-    <div className="bg-white">
-      {/* 1️⃣ HERO - full screen then animates to card on scroll */}
-      <section className="relative bg-white">
-        <motion.div
-          initial={false}
-          animate={{
-            borderRadius: isHeroCompact ? 16 : 0,
-            scale: isHeroCompact ? 0.98 : 1,
-          }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
-          className={`mx-auto overflow-hidden ${isHeroCompact ? "max-w-5xl rounded-2xl mx-4 md:mx-auto" : "max-w-none w-full rounded-none"}`}
-          style={{ willChange: "transform, border-radius" }}
-        >
-          <div className={`w-full overflow-hidden ${isHeroCompact ? "aspect-[4/5] md:aspect-[16/10] max-h-[75vh] rounded-2xl" : "h-[100vh] max-h-[100vh] rounded-none"}`}>
-            <img src={img.heroFull} alt={name} className="w-full h-full object-cover object-center" width={1200} height={900} loading="eager" fetchPriority="high" decoding="async" />
-          </div>
-        </motion.div>
+    <div
+      className="relative text-white"
+      style={{
+        backgroundImage: "url('https://i.ibb.co/WvCp9WYL/Chat-GPT-Image-Sep-5-2026-09-59-51-PM.webp')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundAttachment: "fixed",
+      }}
+    >
+      <div className="absolute inset-0 bg-black/70 pointer-events-none" />
+      <div className="relative z-10">
+      {/* 1️⃣ HERO - dark, no rounded, full width */}
+      <section className="relative bg-transparent">
+        <div className="w-full">
+          <img src={img.heroFull} alt={name} className="w-full h-auto object-cover" width={1200} height={900} loading="eager" fetchPriority="high" decoding="async" />
+        </div>
         <div className="container-luxury py-6 text-center" dir={lang === "ar" ? "rtl" : "ltr"}>
-          <h1 className="font-playfair text-2xl md:text-3xl leading-tight" style={{ fontFamily: "'Playfair Display', serif", fontWeight: 500 }}>{tFunnel.sec1_title}</h1>
+          <h1 className="font-playfair text-2xl md:text-3xl leading-tight text-[#C9A86A]" style={{ fontFamily: "'Playfair Display', serif", fontWeight: 500 }}>{tFunnel.sec1_title}</h1>
           <p className="text-secondary mt-3 max-w-2xl mx-auto text-sm leading-relaxed">{tFunnel.sec1_desc}</p>
           <p className="mt-3 text-sm font-medium tracking-wide">{tFunnel.sec1_list}</p>
           <p className="mt-2 text-sm">{tFunnel.sec1_box}</p>
           <p className="mt-3 text-lg font-semibold">{tFunnel.sec1_price} <span className="text-sm font-normal text-secondary">({formatPrice(product.price)})</span></p>
-          <button onClick={() => setShowOrder(true)} className="mt-6 w-full md:w-auto bg-black text-white px-10 py-4 rounded-full text-sm tracking-widest uppercase hover:bg-[#1a1a1a] shadow-lg">
+          <button onClick={() => setShowOrder(true)} className="mt-6 w-full md:w-auto bg-[#C9A86A] text-black px-10 py-4 rounded-full text-sm tracking-widest uppercase hover:bg-[#B8934A] shadow-lg">
             {tFunnel.sec1_cta}
           </button>
         </div>
       </section>
 
-      {/* 2️⃣ VIDEO */}
-      <section className="bg-[#FDFBF7] py-8">
-        <div className="container-luxury max-w-3xl mx-auto text-center">
-          <div className="relative aspect-video bg-black rounded-2xl overflow-hidden flex items-center justify-center group cursor-pointer max-h-[60vh]" onClick={() => setShowOrder(true)}>
-            <img src={img.videoPoster} alt="video poster" className="w-full h-full object-cover opacity-90" loading="lazy" decoding="async" />
+      {/* 2️⃣ VIDEO - dark, no rounded */}
+      <section className="bg-transparent py-0">
+        <div className="w-full">
+          <div className="relative w-full aspect-video overflow-hidden group cursor-pointer" onClick={() => setShowOrder(true)}>
+            <img src={img.videoPoster} alt="video poster" className="w-full h-full object-cover" loading="lazy" decoding="async" />
             <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
             <div className="absolute w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-xl">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z" /></svg>
             </div>
           </div>
-          <h2 className="font-playfair text-xl mt-5">{tFunnel.sec2_title}</h2>
-          <p className="text-secondary text-sm mt-2 max-w-xl mx-auto">{tFunnel.sec2_desc}</p>
-          <button onClick={() => setShowOrder(true)} className="mt-4 bg-white border border-black text-black px-8 py-2.5 rounded-full text-sm hover:bg-black hover:text-white">
-            {tFunnel.sec2_cta}
-          </button>
-        </div>
-      </section>
-
-      {/* 3️⃣ Chain - tighter 4:5 */}
-      <section className="bg-white py-8">
-        <div className="container-luxury max-w-3xl mx-auto">
-          <div className="aspect-[4/3] md:aspect-[16/9] max-h-[60vh] overflow-hidden rounded-2xl">
-            <img src={img.chain} alt="chain" className="w-full h-full object-cover object-center" loading="lazy" decoding="async" width={900} height={900} />
-          </div>
-          <div className="text-center mt-5">
-            <h2 className="font-playfair text-xl">{tFunnel.sec3_title}</h2>
-            <p className="text-secondary text-sm mt-2 max-w-xl mx-auto leading-relaxed">{tFunnel.sec3_desc}</p>
+          <h2 className="font-playfair text-xl mt-5 text-[#C9A86A] text-center">{tFunnel.sec2_title}</h2>
+          <p className="text-secondary text-sm mt-2 max-w-xl mx-auto text-center">{tFunnel.sec2_desc}</p>
+          <div className="text-center mb-8 pb-2">
+            <button onClick={() => setShowOrder(true)} className="mt-4 bg-transparent border border-[#C9A86A] text-[#C9A86A] px-8 py-2.5 rounded-full text-sm hover:bg-[#C9A86A] hover:text-black inline-block">
+              {tFunnel.sec2_cta}
+            </button>
           </div>
         </div>
       </section>
 
-      {/* 4️⃣ Clasp - side layout on desktop to break monotony */}
-      <section className="bg-[#FDFBF7] py-8">
-        <div className="container-luxury max-w-5xl mx-auto grid md:grid-cols-2 gap-8 items-center">
-          <div className="aspect-square md:aspect-[4/5] max-h-[60vh] overflow-hidden rounded-2xl">
-            <img src={img.clasp} alt="clasp" className="w-full h-full object-cover object-center" loading="lazy" decoding="async" width={700} height={700} />
-          </div>
-          <div className="text-center md:text-left">
-            <h2 className="font-playfair text-xl">{tFunnel.sec4_title}</h2>
-            <p className="text-secondary text-sm mt-2 leading-relaxed">{tFunnel.sec4_desc}</p>
-          </div>
+      {/* 3️⃣ Chain - dark, no rounded, full visible */}
+      <section className="bg-transparent">
+        <div className="w-full">
+          <img src={img.chain} alt="chain" className="w-full h-auto object-cover" loading="lazy" decoding="async" width={900} height={900} />
+        </div>
+        <div className="container-luxury max-w-3xl mx-auto text-center py-6 mt-6 mb-2">
+          <h2 className="font-playfair text-xl text-[#C9A86A]">{tFunnel.sec3_title}</h2>
+          <p className="text-secondary text-sm mt-2 max-w-xl mx-auto leading-relaxed">{tFunnel.sec3_desc}</p>
         </div>
       </section>
 
-      {/* 5️⃣ Bust - full bleed but constrained */}
-      <section className="bg-white py-0">
-        <div className="max-w-5xl mx-auto">
-          <div className="aspect-[4/5] md:aspect-[16/10] max-h-[80vh] overflow-hidden md:rounded-2xl">
-            <img src={img.bust} alt="bust" className="w-full h-full object-cover object-top" loading="lazy" decoding="async" width={1200} height={900} />
-          </div>
+      {/* 4️⃣ Clasp - dark, no background, no rounded, full visible */}
+      <section className="bg-transparent">
+        <div className="w-full">
+          <img src={img.clasp} alt="clasp" className="w-full h-auto object-cover" loading="lazy" decoding="async" width={700} height={700} />
         </div>
-        <div className="container-luxury max-w-3xl mx-auto text-center py-6">
-          <h2 className="font-playfair text-xl md:text-2xl">{tFunnel.sec5_title}</h2>
-          <p className="text-secondary text-sm mt-2">{tFunnel.sec5_desc}</p>
+        <div className="container-luxury max-w-3xl mx-auto text-center py-6 mt-6 mb-2">
+          <h2 className="font-playfair text-xl text-[#C9A86A]">{tFunnel.sec4_title}</h2>
+          <p className="text-secondary text-sm mt-2 max-w-xl mx-auto leading-relaxed">{tFunnel.sec4_desc}</p>
         </div>
       </section>
 
-      {/* 6️⃣+7️⃣ Ring + Earrings side-by-side on desktop */}
-      <section className="bg-[#FDFBF7] py-8">
-        <div className="container-luxury max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
-          <div className="text-center bg-white rounded-2xl p-6">
-            <div className="aspect-square overflow-hidden rounded-xl bg-[#FDFBF7]">
-              <img src={img.ring} alt="ring" className="w-full h-full object-cover" loading="lazy" decoding="async" width={600} height={600} />
-            </div>
-            <h2 className="font-playfair text-lg mt-4">{tFunnel.sec6_title}</h2>
-            <p className="text-secondary text-xs mt-2">{tFunnel.sec6_desc}</p>
-            <p className="mt-3 text-xs tracking-widest font-medium bg-[#FDFBF7] inline-block px-4 py-2 rounded-full border">{tFunnel.sec6_sizes}</p>
-          </div>
-          <div className="text-center bg-white rounded-2xl p-6">
-            <div className="aspect-square overflow-hidden rounded-xl bg-[#FDFBF7]">
-              <img src={img.earrings} alt="earrings" className="w-full h-full object-cover" loading="lazy" decoding="async" width={700} height={500} />
-            </div>
-            <h2 className="font-playfair text-lg mt-4">{tFunnel.sec7_title}</h2>
-            <p className="text-secondary text-xs mt-2">{tFunnel.sec7_desc}</p>
-          </div>
+      {/* 5️⃣ Bust - dark, no background, no rounded, full visible */}
+      <section className="bg-transparent">
+        <div className="w-full">
+          <img src={img.bust} alt="bust" className="w-full h-auto object-cover" loading="lazy" decoding="async" width={900} height={1100} />
+        </div>
+        <div className="container-luxury max-w-3xl mx-auto text-center py-6 mt-6 mb-2">
+          <h2 className="font-playfair text-xl text-[#C9A86A]">{tFunnel.sec5_title}</h2>
+          <p className="text-secondary text-sm mt-2 max-w-xl mx-auto">{tFunnel.sec5_desc}</p>
         </div>
       </section>
 
-      {/* 8️⃣ Box + full set */}
-      <section className="bg-white py-8">
-        <div className="container-luxury max-w-3xl mx-auto text-center">
-          <div className="aspect-[4/3] max-h-[65vh] overflow-hidden rounded-2xl">
-            <img src={img.boxFull} alt="box full set" className="w-full h-full object-cover" loading="lazy" decoding="async" width={900} height={700} />
-          </div>
-          <h2 className="font-playfair text-xl mt-5">{tFunnel.sec8_title}</h2>
+      {/* 6️⃣ Ring - dark, no background, no rounded, full visible */}
+      <section className="bg-transparent">
+        <div className="w-full">
+          <img src={img.ring} alt="ring" className="w-full h-auto object-cover" loading="lazy" decoding="async" width={600} height={600} />
+        </div>
+        <div className="container-luxury max-w-3xl mx-auto text-center py-6 mt-6 mb-2">
+          <h2 className="font-playfair text-xl text-[#C9A86A]">{tFunnel.sec6_title}</h2>
+          <p className="text-secondary text-sm mt-2">{tFunnel.sec6_desc}</p>
+          <p className="mt-3 text-xs tracking-widest font-medium bg-[#C9A86A] text-black inline-block px-4 py-2 rounded-full border border-[#C9A86A]">{tFunnel.sec6_sizes}</p>
+        </div>
+      </section>
+
+      {/* 7️⃣ Earrings - dark, no background, no rounded, full visible */}
+      <section className="bg-transparent">
+        <div className="w-full">
+          <img src={img.earrings} alt="earrings" className="w-full h-auto object-cover" loading="lazy" decoding="async" width={700} height={500} />
+        </div>
+        <div className="container-luxury max-w-3xl mx-auto text-center py-6 mt-6 mb-2">
+          <h2 className="font-playfair text-xl text-[#C9A86A]">{tFunnel.sec7_title}</h2>
+          <p className="text-secondary text-sm mt-2">{tFunnel.sec7_desc}</p>
+        </div>
+      </section>
+
+      {/* 8️⃣ Box + full set - dark, no background, no rounded, full visible */}
+      <section className="bg-transparent">
+        <div className="w-full">
+          <img src={img.boxFull} alt="box full set" className="w-full h-auto object-cover" loading="lazy" decoding="async" width={900} height={700} />
+        </div>
+        <div className="container-luxury max-w-3xl mx-auto text-center py-6 mt-6 mb-2">
+          <h2 className="font-playfair text-xl mt-5 text-[#C9A86A]">{tFunnel.sec8_title}</h2>
           <p className="text-secondary text-sm mt-2">{tFunnel.sec8_desc}</p>
           <p className="mt-3 font-medium text-sm whitespace-pre-line">{tFunnel.sec8_list}</p>
         </div>
       </section>
 
-      {/* 9️⃣ Quality icons - line icons gold */}
-      <section className="bg-[#FDFBF7] py-8 border-y border-border">
-        <div className="container-luxury max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-6 text-center">
+      {/* 9️⃣ Quality icons - exact 5 gold icons from image, dark theme */}
+      <section className="bg-black py-8 border-y border-white/10">
+        <div className="container-luxury max-w-5xl mx-auto grid grid-cols-3 md:grid-cols-5 gap-6 text-center">
           {tFunnel.sec9.map((it) => (
-            <div key={it.title} className="flex flex-col items-center gap-2 p-3">
-              <span className="text-[#B8934A]"><it.Icon /></span>
-              <span className="text-[11px] font-medium tracking-wide uppercase">{it.title}</span>
+            <div key={it.title} className="flex flex-col items-center gap-2 p-2">
+              <span className="text-[#C9A86A]"><it.Icon /></span>
+              <span className="text-[11px] font-medium tracking-wide uppercase text-white">{it.title}</span>
+              <span className="text-[10px] text-white/60">{it.sub}</span>
             </div>
           ))}
         </div>
       </section>
 
-      {/* 🔟 COD Trust */}
-      <section className="bg-white py-8">
-        <div className="container-luxury max-w-2xl mx-auto bg-[#FDFBF7] border border-border rounded-2xl p-6 md:p-7 text-center">
-          <h2 className="font-playfair text-xl">{tFunnel.sec10_title}</h2>
+      {/* 🔟 COD Trust - dark */}
+      <section className="bg-transparent py-8">
+        <div className="container-luxury max-w-2xl mx-auto bg-[#111] border border-white/10 rounded-2xl p-6 md:p-7 text-center">
+          <h2 className="font-playfair text-xl text-[#C9A86A]">{tFunnel.sec10_title}</h2>
           <p className="text-secondary text-sm mt-2">{tFunnel.sec10_desc}</p>
           <ul className="mt-4 space-y-2 text-sm text-left max-w-md mx-auto">
             {tFunnel.sec10_points.map((p) => (
               <li key={p} className="flex gap-2">
                 <span className="text-[#B8934A]">•</span>
-                <span>{p.substring(2)}</span>
+                <span>{p}</span>
               </li>
             ))}
           </ul>
         </div>
       </section>
 
-      {/* 1️⃣1️⃣ Price final */}
-      <section className="bg-[#FDFBF7] py-10">
-        <div className="container-luxury max-w-xl mx-auto text-center bg-white rounded-2xl p-6 md:p-8 border border-border">
+      {/* 1️⃣1️⃣ Price final - dark */}
+      <section className="bg-transparent py-10">
+        <div className="container-luxury max-w-xl mx-auto text-center bg-[#111] rounded-2xl p-6 md:p-8 border border-white/10">
           <p className="text-xs tracking-[0.3em] uppercase text-[#B8934A]">{tFunnel.sec11_sub}</p>
-          <h2 className="font-playfair text-3xl mt-2" style={{ fontFamily: "'Playfair Display', serif", fontWeight: 500 }}>{tFunnel.sec11_title}</h2>
+          <h2 className="font-playfair text-3xl mt-2 text-[#C9A86A]" style={{ fontFamily: "'Playfair Display', serif", fontWeight: 500 }}>{tFunnel.sec11_title}</h2>
           <p className="text-sm whitespace-pre-line mt-3 leading-relaxed">{tFunnel.sec11_list}</p>
           <p className="text-2xl font-semibold mt-4">{tFunnel.sec11_price}</p>
           <ul className="mt-3 space-y-1 text-sm text-secondary">
@@ -331,31 +323,34 @@ export default function Product() {
 
       <OrderModal isOpen={showOrder} onClose={() => setShowOrder(false)} product={product} qty={1} />
 
-      {/* Sticky bottom bar */}
-      <div className={`fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur border-t border-border shadow-[0_-8px_30px_rgba(0,0,0,0.08)] transition-transform duration-300 ${showSticky ? "translate-y-0" : "translate-y-full"}`}>
-        <div className="container-luxury flex items-center justify-between gap-4 py-3">
-          <div className="hidden md:flex items-center gap-3 min-w-0">
-            <img src={product.images[0]} alt={name} className="w-10 h-10 object-cover rounded-lg border" />
-            <div className="min-w-0">
-              <p className="text-xs font-medium truncate">{name}</p>
-              <p className="text-xs text-secondary">{formatPrice(product.price)}</p>
-            </div>
-          </div>
-          <div className="flex-1 md:flex-none text-center md:text-left">
-            <p className="text-xs font-medium md:hidden truncate">{name} — {formatPrice(product.price)}</p>
-          </div>
-          <button onClick={() => setShowOrder(true)} className="shrink-0 bg-black text-white px-6 md:px-8 py-3 rounded-full text-xs md:text-sm tracking-widest uppercase hover:bg-[#1a1a1a]">
-            {lang === "fr" ? "Commander — 279 DH" : lang === "ar" ? "اطلبي الآن — 279 درهم" : "Order — 279 MAD"}
-          </button>
-        </div>
+      {/* Floating right Cart + Commander ici - always shown (like WhatsApp left) */}
+      <div className="fixed bottom-5 right-5 z-40 flex flex-col items-center gap-1.5">
+        <button
+          onClick={() => setShowOrder(true)}
+          aria-label="Commander"
+          className="w-14 h-14 bg-black rounded-full flex items-center justify-center shadow-[0_6px_20px_rgba(0,0,0,0.2)] hover:scale-105 transition-transform"
+        >
+          {/* Cart icon - cats design (shopping bag) */}
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M6 7 L6 18 C6 19.1 6.9 20 8 20 L16 20 C17.1 20 18 19.1 18 18 L18 7 Z" />
+            <path d="M9 7 V5 C9 3.3 10.3 2 12 2 C13.7 2 15 3.3 15 5 V7" />
+            <circle cx="12" cy="12" r="1" fill="white" stroke="none" />
+          </svg>
+        </button>
+        <span className="bg-white border border-black/10 text-black text-[11px] font-medium tracking-wide px-3 py-1 rounded-full shadow-md whitespace-nowrap">
+          {lang === "fr" ? "Commander ici" : lang === "ar" ? "اطلبي هنا" : "Order here"}
+        </span>
+      </div>
       </div>
     </div>
   );
 }
 
-function DropletIcon(){return <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#B8934A" strokeWidth="1.2"><path d="M12 2.5 C12 2.5 6 8 6 13 C6 16.9 8.7 20 12 20 C15.3 20 18 16.9 18 13 C18 8 12 2.5 12 2.5Z"/></svg>}
-function LeafIcon(){return <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#B8934A" strokeWidth="1.2"><path d="M12 3 C7 3 4 7 4 11 C4 16 8 20 12 20 C16 20 20 16 20 11 C20 7 17 3 12 3Z"/><path d="M12 20 V7"/></svg>}
-function SparkleIcon(){return <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#B8934A" strokeWidth="1.2"><path d="M12 2 L13.5 8.5 L20 10 L13.5 11.5 L12 18 L10.5 11.5 L4 10 L10.5 8.5 Z"/><path d="M18 14 L18.8 16.2 L21 17 L18.8 17.8 L18 20 L17.2 17.8 L15 17 L17.2 16.2 Z"/><path d="M6 14 L6.6 15.8 L8.5 16.5 L6.6 17.2 L6 19 L5.4 17.2 L3.5 16.5 L5.4 15.8 Z"/></svg>}
-function ShieldIcon(){return <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#B8934A" strokeWidth="1.2"><path d="M12 3 L4 7 V13 C4 16.3 6.5 19.1 12 21 C17.5 19.1 20 16.3 20 13 V7 L12 3Z"/><path d="M9 12 L11 14 L15 10"/></svg>}
-function TruckIcon(){return <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#B8934A" strokeWidth="1.2"><path d="M1 8 H15 V16 H1 Z"/><path d="M15 10 H19 L21 13 V16 H15"/><circle cx="5.5" cy="19" r="2"/><circle cx="18.5" cy="19" r="2"/></svg>}
-function CashIcon(){return <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#B8934A" strokeWidth="1.2"><rect x="3" y="7" width="18" height="12" rx="1.5"/><circle cx="12" cy="13" r="2.5"/><path d="M7 13 H6 M18 13 H17"/></svg>}
+function DiamondIcon(){return <img src="https://i.ibb.co/6RQVRkdn/diamond.png" alt="diamond" width="28" height="28" loading="lazy" decoding="async" className="w-7 h-7 object-contain" />;}
+function DropletIcon(){return <img src="https://i.ibb.co/bjD5mQ0H/droplet.png" alt="droplet" width="28" height="28" loading="lazy" decoding="async" className="w-7 h-7 object-contain" />;}
+function LeafIcon(){return <img src="https://i.ibb.co/G45vnQNn/leaf.png" alt="leaf" width="28" height="28" loading="lazy" decoding="async" className="w-7 h-7 object-contain" />;}
+function ShieldIcon(){return <img src="https://i.ibb.co/qLN0cfqP/shield.png" alt="shield" width="28" height="28" loading="lazy" decoding="async" className="w-7 h-7 object-contain" />;}
+function GiftIcon(){return <img src="https://i.ibb.co/zvm82b4/gift.png" alt="gift" width="28" height="28" loading="lazy" decoding="async" className="w-7 h-7 object-contain" />;}
+function SparkleIcon(){return <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9A86A" strokeWidth="1.2"><path d="M12 2 L13.5 8.5 L20 10 L13.5 11.5 L12 18 L10.5 11.5 L4 10 L10.5 8.5 Z"/><path d="M18 14 L18.8 16.2 L21 17 L18.8 17.8 L18 20 L17.2 17.8 L15 17 L17.2 16.2 Z"/><path d="M6 14 L6.6 15.8 L8.5 16.5 L6.6 17.2 L6 19 L5.4 17.2 L3.5 16.5 L5.4 15.8 Z"/></svg>}
+function TruckIcon(){return <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9A86A" strokeWidth="1.2"><path d="M1 8 H15 V16 H1 Z"/><path d="M15 10 H19 L21 13 V16 H15"/><circle cx="5.5" cy="19" r="2"/><circle cx="18.5" cy="19" r="2"/></svg>}
+function CashIcon(){return <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9A86A" strokeWidth="1.2"><rect x="3" y="7" width="18" height="12" rx="1.5"/><circle cx="12" cy="13" r="2.5"/><path d="M7 13 H6 M18 13 H17"/></svg>}
