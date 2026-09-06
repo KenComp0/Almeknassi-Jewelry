@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { products } from "../data/products";
 import { useLanguage } from "../i18n/LanguageContext";
 import OrderModal from "../components/OrderModal";
+import ProductSchema from "../components/ProductSchema";
+import usePageMeta from "../hooks/usePageMeta";
 
 export default function Product() {
   const { id } = useParams();
@@ -17,6 +19,22 @@ export default function Product() {
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  usePageMeta({
+    title:
+      lang === "fr"
+        ? "Coffret RADKO Doré 279 DH — Al Meknassi Bijoux"
+        : lang === "ar"
+        ? "طقم الرادكو الذهبي 279 درهم — المكناسي"
+        : "RADKO Gold Set 279 MAD — Al Meknassi Jewelry",
+    description:
+      lang === "fr"
+        ? "Commandez le Coffret RADKO Doré : collier, bracelet, bague, boucles + coffret de luxe, 279 DH. Paiement à la livraison, vérifiez avant de payer."
+        : lang === "ar"
+        ? "اطلبوا طقم الرادكو الذهبي: سلسلة، سوار، خاتم، أقراط + علبة فاخرة، 279 درهم. الدفع عند الاستلام."
+        : "Order the RADKO Gold Set: necklace, bracelet, ring, earrings + luxury box, 279 MAD. Cash on delivery.",
+    path: `/product/${product.id}`,
+  });
 
   useEffect(() => {
     const open = () => setShowOrder(true);
@@ -327,6 +345,7 @@ export default function Product() {
         </div>
       </section>
 
+      <ProductSchema />
       <OrderModal isOpen={showOrder} onClose={() => setShowOrder(false)} product={product} qty={1} />
 
       {/* Floating right Cart + Commander ici - always shown (like WhatsApp left) */}

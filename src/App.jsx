@@ -9,6 +9,7 @@ import LanguageSplash from "./components/LanguageSplash";
 const Home = lazy(() => import("./pages/Home"));
 const Product = lazy(() => import("./pages/Product"));
 const Cart = lazy(() => import("./pages/Cart"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -65,6 +66,7 @@ function AppContent() {
               <Route path="/collection" element={<Navigate to="/" replace />} />
               <Route path="/product/:id" element={<Product />} />
               <Route path="/cart" element={<Cart cart={cart} onUpdateQty={handleUpdateQty} onRemove={handleRemove} />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
         </main>

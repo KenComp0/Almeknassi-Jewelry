@@ -4,7 +4,7 @@ import { useLanguage } from "../i18n/LanguageContext";
 export default function Footer() {
   const { t } = useLanguage();
   return (
-    <footer className="bg-[#0A0A0A] text-white border-t border-white/10 min-h-[380px]" style={{ contain: "layout", contentVisibility: "auto", containIntrinsicSize: "380px" }}>
+    <footer className="bg-[#0A0A0A] text-white border-t border-white/10">
       {/* Trust bar */}
       <div className="border-b border-white/10 bg-black">
         <div className="container-luxury grid grid-cols-2 md:grid-cols-4 gap-8 py-8 text-center">
@@ -20,7 +20,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
           {/* Contact */}
           <div>
-            <h4 className="font-playfair text-[17px] mb-4 text-[#C9A86A]">{t("footer.contact")}</h4>
+            <h3 className="font-playfair text-[17px] mb-4 text-[#C9A86A]">{t("footer.contact")}</h3>
             <div className="space-y-3 text-sm text-white/70">
               <p className="flex items-start gap-2">
                 <span className="mt-1 text-[#C9A86A]">
@@ -45,7 +45,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div className="md:text-center">
-            <h4 className="font-playfair text-[17px] mb-4 text-[#C9A86A]">{t("footer.quickLinks")}</h4>
+            <h3 className="font-playfair text-[17px] mb-4 text-[#C9A86A]">{t("footer.quickLinks")}</h3>
             <ul className="space-y-2.5 text-sm text-white/70">
               <li>
                 <Link to="/" className="hover:text-[#C9A86A]">
@@ -166,16 +166,16 @@ function PhoneIcon() {
 }
 function InstagramIcon() {
   return (
-    <img src="https://i.ibb.co/Ld9f7tdy/instagram.png" alt="instagram" width="14" height="14" loading="lazy" decoding="async" className="w-[14px] h-[14px] object-contain" />
+    <img src="https://i.ibb.co/Ld9f7tdy/instagram.png" alt="instagram" width="17" height="17" loading="lazy" decoding="async" className="w-[17px] h-[17px] object-contain" />
   );
 }
 function FacebookIcon() {
   return (
-    <img src="https://i.ibb.co/DDk9hc27/facebook.png" alt="facebook" width="14" height="14" loading="lazy" decoding="async" className="w-[14px] h-[14px] object-contain" />
+    <img src="https://i.ibb.co/DDk9hc27/facebook.png" alt="facebook" width="17" height="17" loading="lazy" decoding="async" className="w-[17px] h-[17px] object-contain" />
   );
 }
 function TikTokIcon() {
   return (
-    <img src="https://i.ibb.co/2YKNsQsb/tiktok.png" alt="tiktok" width="14" height="14" loading="lazy" decoding="async" className="w-[14px] h-[14px] object-contain" />
+    <img src="https://i.ibb.co/2YKNsQsb/tiktok.png" alt="tiktok" width="17" height="17" loading="lazy" decoding="async" className="w-[17px] h-[17px] object-contain" />
   );
 }

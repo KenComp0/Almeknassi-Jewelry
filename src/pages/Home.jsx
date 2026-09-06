@@ -5,6 +5,8 @@ import { products } from "../data/products";
 import { useLanguage } from "../i18n/LanguageContext";
 import MarbleBackground from "../components/MarbleBackground";
 import OrderModal from "../components/OrderModal";
+import ProductSchema from "../components/ProductSchema";
+import usePageMeta from "../hooks/usePageMeta";
 
 export default function Home() {
   const { lang, t, formatPrice } = useLanguage();
@@ -13,9 +15,23 @@ export default function Home() {
   const desc = typeof product.description === "object" ? product.description[lang] : product.description;
   const details = typeof product.details === "object" ? product.details[lang] : product.details;
   const badge = typeof product.badge === "object" ? product.badge[lang] : product.badge;
-  const [activeImg, setActiveImg] = useState(product.images[0]);
   const [showOrder, setShowOrder] = useState(false);
-  const smallImages = product.landingSmall || product.images.slice(1, 4);
+
+  usePageMeta({
+    title:
+      lang === "fr"
+        ? "Coffret RADKO Doré — Al Meknassi Bijoux"
+        : lang === "ar"
+        ? "طقم الرادكو الذهبي — المكناسي"
+        : "RADKO Gold Set — Al Meknassi Jewelry",
+    description:
+      lang === "fr"
+        ? "Parure dorée : collier, bracelet, bague, boucles + coffret, 279 DH. Paiement à la livraison partout au Maroc."
+        : lang === "ar"
+        ? "طقم ذهبي: سلسلة، سوار، خاتم، أقراط + علبة، 279 درهم. الدفع عند الاستلام في جميع أنحاء المغرب."
+        : "Golden set: necklace, bracelet, ring, earrings + box, 279 MAD. Cash on delivery all over Morocco.",
+    path: "/",
+  });
 
   useEffect(() => {
     const open = () => setShowOrder(true);
@@ -41,7 +57,6 @@ export default function Home() {
           transition={{ duration: 0.4 }}
           className="max-w-5xl mx-auto text-center mb-10"
         >
-          <p className="text-xs tracking-[0.3em] uppercase text-[#C9A86A]">{t("home.focusedTitle")}</p>
           <h1
             className="font-playfair mt-3 leading-[1.1] text-[#C9A86A]"
             style={{ fontFamily: "'Playfair Display', serif", fontSize: "40px", fontWeight: 500, letterSpacing: "-0.5px" }}
@@ -53,30 +68,11 @@ export default function Home() {
 
         <div className="max-w-5xl mx-auto bg-[#111] border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden rounded-2xl min-h-[680px] md:min-h-[620px]" style={{ contain: "layout" }}>
           <div className="grid grid-cols-1 lg:grid-cols-2">
-            {/* Images - 1 main + 3 small, hover WhatsApp */}
+            {/* Single image - click goes to product page */}
             <div className="relative bg-white p-4 md:p-6">
-              <div className="aspect-square overflow-hidden bg-[#FDFBF7] rounded-2xl product-image group relative">
-                <img src={activeImg} alt={name} width={800} height={800} loading="eager" fetchPriority="high" decoding="async" className="w-full h-full object-cover" />
-                {/* Hover WhatsApp button */}
-                <button
-                  onClick={() => setShowOrder(true)}
-                  className="absolute bottom-3 left-3 bg-white/95 backdrop-blur border border-black/10 text-black px-4 py-2 text-xs font-medium tracking-widest uppercase rounded-full shadow-md opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all flex items-center gap-2 hover:bg-black hover:text-white"
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="text-[#25D366]"><path d="M19.05 4.91A9.9 9.9 0 0 0 12.02 2C6.54 2 2.08 6.46 2.08 11.94c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.77 1.22h.01c5.48 0 9.94-4.46 9.94-9.94 0-2.65-1.03-5.14-2.92-7.03z"/></svg>
-                  {t("home.orderWhatsapp")}
-                </button>
-              </div>
-              <div className="grid grid-cols-3 gap-3 mt-3">
-                {smallImages.map((img, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setActiveImg(img)}
-                    className={`aspect-square overflow-hidden bg-[#FDFBF7] border rounded-xl product-image ${activeImg === img ? "border-primary" : "border-white"}`}
-                  >
-                    <img src={img} alt="" width={400} height={400} loading="lazy" decoding="async" className="w-full h-full object-cover" />
-                  </button>
-                ))}
-              </div>
+              <Link to={`/product/${product.id}`} className="block aspect-square overflow-hidden bg-[#FDFBF7] rounded-2xl product-image group relative">
+                <img src="https://i.ibb.co/kVxmTJbw/displayed.webp" alt={name} width={800} height={800} loading="eager" fetchPriority="high" decoding="async" className="w-full h-full object-cover" />
+              </Link>
               {badge && (
                 <span className="absolute top-6 left-6 bg-primary text-white text-[10px] tracking-widest uppercase px-3 py-1.5 rounded-full">
                   {badge}
@@ -147,6 +143,7 @@ export default function Home() {
           {lang === "fr" ? "Paiement à la livraison • Livraison partout au Maroc" : lang === "ar" ? "الدفع عند الاستلام • التوصيل في جميع أنحاء المغرب" : "Cash on delivery • Delivery all over Morocco"}
         </p>
       </div>
+      <ProductSchema />
       <OrderModal isOpen={showOrder} onClose={() => setShowOrder(false)} product={product} qty={1} />
       <style>{`.product-image{transition:transform 0.4s ease}.product-image:hover{transform:scale(1.03)}`}</style>
     </div>
