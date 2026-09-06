@@ -197,24 +197,7 @@ export default function Product() {
     >
       <div className="absolute inset-0 bg-black/70 pointer-events-none" />
       <div className="relative z-10">
-      {/* 1️⃣ HERO - dark, no rounded, full width */}
-      <section className="relative bg-transparent">
-        <div className="w-full">
-          <img src={img.heroFull} alt={name} className="w-full h-auto object-cover" width={1200} height={900} loading="eager" fetchPriority="high" decoding="async" />
-        </div>
-        <div className="container-luxury py-6 text-center" dir={lang === "ar" ? "rtl" : "ltr"}>
-          <h1 className="font-playfair text-2xl md:text-3xl leading-tight text-[#C9A86A]" style={{ fontFamily: "'Cormorant Garamond', 'Noto Serif Arabic', serif", fontWeight: 500 }}>{tFunnel.sec1_title}</h1>
-          <p className="text-secondary mt-3 max-w-2xl mx-auto text-sm leading-relaxed">{tFunnel.sec1_desc}</p>
-          <p className="mt-3 text-sm font-medium tracking-wide">{tFunnel.sec1_list}</p>
-          <p className="mt-2 text-sm">{tFunnel.sec1_box}</p>
-          <p className="mt-3 text-lg font-semibold">{tFunnel.sec1_price} <span className="text-sm font-normal text-secondary">({formatPrice(product.price)})</span></p>
-          <button onClick={() => setShowOrder(true)} className="mt-6 w-full md:w-auto bg-[#C9A86A] text-black px-10 py-4 rounded-full text-sm tracking-widest uppercase hover:bg-[#B8934A] shadow-lg">
-            {tFunnel.sec1_cta}
-          </button>
-        </div>
-      </section>
-
-      {/* 2️⃣ VIDEO - real video, autoplay muted loop */}
+      {/* 1️⃣ VIDEO - real video first, autoplay muted loop */}
       <section className="bg-transparent py-0">
         <div className="w-full">
           <div className="relative w-full aspect-video overflow-hidden bg-black">
@@ -236,6 +219,23 @@ export default function Product() {
               {tFunnel.sec2_cta}
             </button>
           </div>
+        </div>
+      </section>
+
+      {/* 2️⃣ HERO - dark, no rounded, full width */}
+      <section className="relative bg-transparent">
+        <div className="w-full">
+          <img src={img.heroFull} alt={name} className="w-full h-auto object-cover" width={1200} height={900} loading="eager" fetchPriority="high" decoding="async" />
+        </div>
+        <div className="container-luxury py-6 text-center" dir={lang === "ar" ? "rtl" : "ltr"}>
+          <h1 className="font-playfair text-2xl md:text-3xl leading-tight text-[#C9A86A]" style={{ fontFamily: "'Cormorant Garamond', 'Noto Serif Arabic', serif", fontWeight: 500 }}>{tFunnel.sec1_title}</h1>
+          <p className="text-secondary mt-3 max-w-2xl mx-auto text-sm leading-relaxed">{tFunnel.sec1_desc}</p>
+          <p className="mt-3 text-sm font-medium tracking-wide">{tFunnel.sec1_list}</p>
+          <p className="mt-2 text-sm">{tFunnel.sec1_box}</p>
+          <p className="mt-3 text-lg font-semibold">{tFunnel.sec1_price} <span className="text-sm font-normal text-secondary">({formatPrice(product.price)})</span></p>
+          <button onClick={() => setShowOrder(true)} className="mt-6 w-full md:w-auto bg-[#C9A86A] text-black px-10 py-4 rounded-full text-sm tracking-widest uppercase hover:bg-[#B8934A] shadow-lg">
+            {tFunnel.sec1_cta}
+          </button>
         </div>
       </section>
 
