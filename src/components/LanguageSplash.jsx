@@ -18,7 +18,7 @@ export default function LanguageSplash({ show, onSelect }) {
             transition={{ duration: 0.8, delay: 0.2 }}
             src="/logo.svg"
             alt="Al Meknassi Bijoux"
-            className="h-[108px] w-auto object-contain"
+            className="h-[150px] w-auto object-contain"
             style={{ filter: "brightness(1.2)" }}
           />
           <motion.div

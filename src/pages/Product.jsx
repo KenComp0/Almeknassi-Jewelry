@@ -57,6 +57,8 @@ export default function Product() {
       sec3_desc: "Collier au design élégant et à l'éclat doré distinctif, avec des finitions fines qui lui donnent une présence autour du cou. Facile à associer au quotidien et en soirée.",
       sec4_title: "Même les petits détails sont soignés",
       sec4_desc: "Fermoir au design élégant inspiré des bijoux de luxe, pour une touche plus chic et distinctive.",
+      sec4b_title: "Un bracelet délicat aux finitions soignées",
+      sec4b_desc: "Un bracelet plus fin au même éclat doré, pensé pour se porter seul ou s'empiler avec le reste de l'ensemble.",
       sec5_title: "Une élégance qui se voit au premier regard",
       sec5_desc: "Un ensemble coordonné collier, bracelet, bague et boucles dans un seul design, pour une présence élégante et complète.",
       sec6_title: "Bague au design audacieux et élégant",
@@ -98,6 +100,8 @@ export default function Product() {
       sec3_desc: "Elegant necklace with distinctive golden shine and fine details for a clear presence around the neck. Easy to style daily and for events.",
       sec4_title: "Even small details are carefully crafted",
       sec4_desc: "Elegant clasp inspired by luxury jewelry, for a more chic touch.",
+      sec4b_title: "A delicate bracelet with refined finish",
+      sec4b_desc: "A finer bracelet with the same golden shine, made to wear alone or stacked with the rest of the set.",
       sec5_title: "Elegance visible at first glance",
       sec5_desc: "Coordinated set — necklace, bracelet, ring and earrings in one design for a complete elegant look.",
       sec6_title: "Bold and elegant ring design",
@@ -139,6 +143,8 @@ export default function Product() {
       sec3_desc: "سلسلة بتصميم أنيق ولمعة ذهبية مميزة، مع تفاصيل دقيقة تمنحها حضورًا واضحًا حول الرقبة. تصميم فاخر يمكنك تنسيقه بسهولة مع إطلالاتك اليومية والمناسبات.",
       sec4_title: "حتى التفاصيل الصغيرة صُممت بعناية",
       sec4_desc: "مشبك بتصميم أنيق ومستوحى من تفاصيل المجوهرات الفاخرة، ليمنح السلسلة لمسة أكثر أناقة وتميزًا.",
+      sec4b_title: "سوار ناعم بلمسات متقنة",
+      sec4b_desc: "سوار أنعم بنفس اللمعة الذهبية، مصمم ليُلبس وحده أو مع باقي الطقم.",
       sec5_title: "أناقة تظهر من أول نظرة",
       sec5_desc: "طقم متناسق يجمع السلسلة والسوار والخاتم والأقراط في تصميم واحد، ليمنح إطلالتك حضورًا أنيقًا ومتكاملًا.",
       sec6_title: "خاتم بتصميم جريء وأنيق",
@@ -169,14 +175,13 @@ export default function Product() {
   }[lang];
 
   const img = {
-    heroFull: product.images[5],
-    videoPoster: product.images[4],
-    chain: product.images[0],
-    clasp: product.images[2],
-    bust: product.images[6],
-    ring: product.images[3],
-    earrings: product.images[7],
-    boxFull: product.images[4],
+    heroFull: product.images[0],
+    chain: product.images[1],
+    littleOne: product.images[2],
+    earrings: product.images[3],
+    ring: product.images[4],
+    bust: product.images[5],
+    clasp: product.images[6],
   };
 
   return (
@@ -209,15 +214,20 @@ export default function Product() {
         </div>
       </section>
 
-      {/* 2️⃣ VIDEO - dark, no rounded */}
+      {/* 2️⃣ VIDEO - real video, autoplay muted loop */}
       <section className="bg-transparent py-0">
         <div className="w-full">
-          <div className="relative w-full aspect-video overflow-hidden group cursor-pointer" onClick={() => setShowOrder(true)}>
-            <img src={img.videoPoster} alt="video poster" className="w-full h-full object-cover" loading="lazy" decoding="async" />
-            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
-            <div className="absolute w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-xl">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z" /></svg>
-            </div>
+          <div className="relative w-full aspect-video overflow-hidden bg-black">
+            <video
+              src={product.video}
+              poster={product.videoPoster}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              className="w-full h-full object-cover"
+            />
           </div>
           <h2 className="font-playfair text-xl mt-5 text-[#C9A86A] text-center">{tFunnel.sec2_title}</h2>
           <p className="text-secondary text-sm mt-2 max-w-xl mx-auto text-center">{tFunnel.sec2_desc}</p>
@@ -240,25 +250,25 @@ export default function Product() {
         </div>
       </section>
 
-      {/* 4️⃣ Clasp - dark, no background, no rounded, full visible */}
+      {/* 4️⃣ Little one - dark, no background, no rounded, full visible */}
       <section className="bg-transparent">
         <div className="w-full">
-          <img src={img.clasp} alt="clasp" className="w-full h-auto object-cover" loading="lazy" decoding="async" width={700} height={700} />
+          <img src={img.littleOne} alt="little bracelet" className="w-full h-auto object-cover" loading="lazy" decoding="async" width={900} height={900} />
         </div>
         <div className="container-luxury max-w-3xl mx-auto text-center py-6 mt-6 mb-2">
-          <h2 className="font-playfair text-xl text-[#C9A86A]">{tFunnel.sec4_title}</h2>
-          <p className="text-secondary text-sm mt-2 max-w-xl mx-auto leading-relaxed">{tFunnel.sec4_desc}</p>
+          <h2 className="font-playfair text-xl text-[#C9A86A]">{tFunnel.sec4b_title}</h2>
+          <p className="text-secondary text-sm mt-2 max-w-xl mx-auto leading-relaxed">{tFunnel.sec4b_desc}</p>
         </div>
       </section>
 
-      {/* 5️⃣ Bust - dark, no background, no rounded, full visible */}
+      {/* 5️⃣ Earrings - dark, no background, no rounded, full visible */}
       <section className="bg-transparent">
         <div className="w-full">
-          <img src={img.bust} alt="bust" className="w-full h-auto object-cover" loading="lazy" decoding="async" width={900} height={1100} />
+          <img src={img.earrings} alt="earrings" className="w-full h-auto object-cover" loading="lazy" decoding="async" width={700} height={500} />
         </div>
         <div className="container-luxury max-w-3xl mx-auto text-center py-6 mt-6 mb-2">
-          <h2 className="font-playfair text-xl text-[#C9A86A]">{tFunnel.sec5_title}</h2>
-          <p className="text-secondary text-sm mt-2 max-w-xl mx-auto">{tFunnel.sec5_desc}</p>
+          <h2 className="font-playfair text-xl text-[#C9A86A]">{tFunnel.sec7_title}</h2>
+          <p className="text-secondary text-sm mt-2">{tFunnel.sec7_desc}</p>
         </div>
       </section>
 
@@ -274,22 +284,30 @@ export default function Product() {
         </div>
       </section>
 
-      {/* 7️⃣ Earrings - dark, no background, no rounded, full visible */}
+      {/* 7️⃣ Bust - dark, no background, no rounded, full visible */}
       <section className="bg-transparent">
         <div className="w-full">
-          <img src={img.earrings} alt="earrings" className="w-full h-auto object-cover" loading="lazy" decoding="async" width={700} height={500} />
+          <img src={img.bust} alt="bust" className="w-full h-auto object-cover" loading="lazy" decoding="async" width={900} height={1100} />
         </div>
         <div className="container-luxury max-w-3xl mx-auto text-center py-6 mt-6 mb-2">
-          <h2 className="font-playfair text-xl text-[#C9A86A]">{tFunnel.sec7_title}</h2>
-          <p className="text-secondary text-sm mt-2">{tFunnel.sec7_desc}</p>
+          <h2 className="font-playfair text-xl text-[#C9A86A]">{tFunnel.sec5_title}</h2>
+          <p className="text-secondary text-sm mt-2 max-w-xl mx-auto">{tFunnel.sec5_desc}</p>
         </div>
       </section>
 
-      {/* 8️⃣ Box + full set - dark, no background, no rounded, full visible */}
+      {/* 8️⃣ Clasp finale - dark, no background, no rounded, full visible */}
       <section className="bg-transparent">
         <div className="w-full">
-          <img src={img.boxFull} alt="box full set" className="w-full h-auto object-cover" loading="lazy" decoding="async" width={900} height={700} />
+          <img src={img.clasp} alt="clasp" className="w-full h-auto object-cover" loading="lazy" decoding="async" width={700} height={700} />
         </div>
+        <div className="container-luxury max-w-3xl mx-auto text-center py-6 mt-6 mb-2">
+          <h2 className="font-playfair text-xl text-[#C9A86A]">{tFunnel.sec4_title}</h2>
+          <p className="text-secondary text-sm mt-2 max-w-xl mx-auto leading-relaxed">{tFunnel.sec4_desc}</p>
+        </div>
+      </section>
+
+      {/* 🎁 Gift strip - text only, value + gift message */}
+      <section className="bg-transparent">
         <div className="container-luxury max-w-3xl mx-auto text-center py-6 mt-6 mb-2">
           <h2 className="font-playfair text-xl mt-5 text-[#C9A86A]">{tFunnel.sec8_title}</h2>
           <p className="text-secondary text-sm mt-2">{tFunnel.sec8_desc}</p>
