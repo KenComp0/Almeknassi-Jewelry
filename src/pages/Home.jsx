@@ -59,7 +59,7 @@ export default function Home() {
         >
           <h1
             className="font-playfair mt-3 leading-[1.1] text-[#C9A86A]"
-            style={{ fontFamily: "'Playfair Display', serif", fontSize: "40px", fontWeight: 500, letterSpacing: "-0.5px" }}
+            style={{ fontFamily: "'Cormorant Garamond', 'Noto Serif Arabic', serif", fontSize: "40px", fontWeight: 500, letterSpacing: "-0.5px" }}
           >
             {name}
           </h1>
@@ -85,7 +85,7 @@ export default function Home() {
               <p className="text-[11px] tracking-[0.18em] uppercase text-[#C9A86A]">{product.category}</p>
               <h2
                 className="font-playfair mt-2 leading-[1.1] text-white"
-                style={{ fontFamily: "'Playfair Display', serif", fontSize: "40px", fontWeight: 500, letterSpacing: "-0.5px" }}
+                style={{ fontFamily: "'Cormorant Garamond', 'Noto Serif Arabic', serif", fontSize: "40px", fontWeight: 500, letterSpacing: "-0.5px" }}
               >
                 {name}
               </h2>

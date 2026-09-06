@@ -198,7 +198,7 @@ export default function Product() {
           <img src={img.heroFull} alt={name} className="w-full h-auto object-cover" width={1200} height={900} loading="eager" fetchPriority="high" decoding="async" />
         </div>
         <div className="container-luxury py-6 text-center" dir={lang === "ar" ? "rtl" : "ltr"}>
-          <h1 className="font-playfair text-2xl md:text-3xl leading-tight text-[#C9A86A]" style={{ fontFamily: "'Playfair Display', serif", fontWeight: 500 }}>{tFunnel.sec1_title}</h1>
+          <h1 className="font-playfair text-2xl md:text-3xl leading-tight text-[#C9A86A]" style={{ fontFamily: "'Cormorant Garamond', 'Noto Serif Arabic', serif", fontWeight: 500 }}>{tFunnel.sec1_title}</h1>
           <p className="text-secondary mt-3 max-w-2xl mx-auto text-sm leading-relaxed">{tFunnel.sec1_desc}</p>
           <p className="mt-3 text-sm font-medium tracking-wide">{tFunnel.sec1_list}</p>
           <p className="mt-2 text-sm">{tFunnel.sec1_box}</p>
@@ -330,7 +330,7 @@ export default function Product() {
       <section className="bg-transparent py-10">
         <div className="container-luxury max-w-xl mx-auto text-center bg-[#111] rounded-2xl p-6 md:p-8 border border-white/10">
           <p className="text-xs tracking-[0.3em] uppercase text-[#B8934A]">{tFunnel.sec11_sub}</p>
-          <h2 className="font-playfair text-3xl mt-2 text-[#C9A86A]" style={{ fontFamily: "'Playfair Display', serif", fontWeight: 500 }}>{tFunnel.sec11_title}</h2>
+          <h2 className="font-playfair text-3xl mt-2 text-[#C9A86A]" style={{ fontFamily: "'Cormorant Garamond', 'Noto Serif Arabic', serif", fontWeight: 500 }}>{tFunnel.sec11_title}</h2>
           <p className="text-sm whitespace-pre-line mt-3 leading-relaxed">{tFunnel.sec11_list}</p>
           <p className="text-2xl font-semibold mt-4">{tFunnel.sec11_price}</p>
           <ul className="mt-3 space-y-1 text-sm text-secondary">
