@@ -14,9 +14,9 @@ export default {
         border: "#EAEAEA",
       },
       fontFamily: {
-        playfair: ['"Playfair Display"', "serif"],
-        inter: ["Inter", "sans-serif"],
-        poppins: ["Poppins", "sans-serif"],
+        playfair: ['"Cormorant Garamond"', '"Noto Serif Arabic"', "serif"],
+        inter: ["Montserrat", '"Noto Sans Arabic"', "sans-serif"],
+        poppins: ["Montserrat", '"Noto Sans Arabic"', "sans-serif"],
       },
       maxWidth: {
         container: "1200px",

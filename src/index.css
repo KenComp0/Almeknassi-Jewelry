@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Montserrat:wght@400;500;600&family=Noto+Serif+Arabic:wght@500;600&family=Noto+Sans+Arabic:wght@400;500;600&display=swap');
 
 /* Fix CLS from font swap - match fallback metrics */
 @font-face {
-  font-family: 'Playfair Display Fallback';
+  font-family: 'Cormorant Garamond Fallback';
   src: local('Times New Roman');
   size-adjust: 105%;
   ascent-override: 95%;
@@ -18,14 +18,27 @@
     scroll-behavior: smooth;
   }
   body {
-    font-family: 'Inter', 'Poppins', sans-serif;
-    color: #000000;
-    background: #FDFBF7;
+    font-family: 'Montserrat', 'Noto Sans Arabic', sans-serif;
+    color: #FFFFFF;
+    background: #0A0A0A;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  h1,h2,h3,h4 {
-    font-family: 'Playfair Display', 'Playfair Display Fallback', serif;
+  h1,h2 {
+    font-family: 'Cormorant Garamond', 'Noto Serif Arabic', 'Cormorant Garamond Fallback', serif;
+  }
+  h3,h4 {
+    font-family: 'Montserrat', 'Noto Sans Arabic', sans-serif;
+  }
+  /* Independent Arabic system: Noto stacks take priority when lang is Arabic */
+  html[lang="ar"] body {
+    font-family: 'Noto Sans Arabic', 'Montserrat', sans-serif;
+  }
+  html[lang="ar"] h1,html[lang="ar"] h2 {
+    font-family: 'Noto Serif Arabic', 'Cormorant Garamond', serif;
+  }
+  html[lang="ar"] h3,html[lang="ar"] h4 {
+    font-family: 'Noto Sans Arabic', 'Montserrat', sans-serif;
   }
 }
 

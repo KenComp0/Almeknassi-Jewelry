@@ -4,9 +4,9 @@ import { useLanguage } from "../i18n/LanguageContext";
 export default function Footer() {
   const { t } = useLanguage();
   return (
-    <footer className="bg-[#F9F9F7] border-t border-border min-h-[380px]" style={{ contain: "layout", contentVisibility: "auto", containIntrinsicSize: "380px" }}>
+    <footer className="bg-[#0A0A0A] text-white border-t border-white/10">
       {/* Trust bar */}
-      <div className="border-b border-border bg-white">
+      <div className="border-b border-white/10 bg-black">
         <div className="container-luxury grid grid-cols-2 md:grid-cols-4 gap-8 py-8 text-center">
           <TrustItem icon={<SupportIcon />} title={t("footer.support")} subtitle={t("footer.supportSub")} />
           <TrustItem icon={<SecureIcon />} title={t("footer.secured")} subtitle={t("footer.securedSub")} />
@@ -20,10 +20,10 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
           {/* Contact */}
           <div>
-            <h4 className="font-playfair text-[17px] mb-4">{t("footer.contact")}</h4>
-            <div className="space-y-3 text-sm text-secondary">
+            <h3 className="font-playfair text-[17px] mb-4 text-[#C9A86A]">{t("footer.contact")}</h3>
+            <div className="space-y-3 text-sm text-white/70">
               <p className="flex items-start gap-2">
-                <span className="mt-1">
+                <span className="mt-1 text-[#C9A86A]">
                   <PhoneIcon />
                 </span>
                 <span>
@@ -31,7 +31,7 @@ export default function Footer() {
                   <br />
                   <a
                     href={`tel:+${import.meta.env.VITE_WHATSAPP_NUMBER || "212664677347"}`}
-                    className="text-primary font-semibold text-base hover:text-accent"
+                    className="text-white font-semibold text-base hover:text-[#C9A86A]"
                   >
                     +212 664-677347
                   </a>
@@ -45,29 +45,29 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div className="md:text-center">
-            <h4 className="font-playfair text-[17px] mb-4">{t("footer.quickLinks")}</h4>
-            <ul className="space-y-2.5 text-sm text-secondary">
+            <h3 className="font-playfair text-[17px] mb-4 text-[#C9A86A]">{t("footer.quickLinks")}</h3>
+            <ul className="space-y-2.5 text-sm text-white/70">
               <li>
-                <Link to="/" className="hover:text-accent">
+                <Link to="/" className="hover:text-[#C9A86A]">
                   {t("nav.home")}
                 </Link>
               </li>
               <li>
-                <Link to="/" className="hover:text-accent">
+                <Link to="/" className="hover:text-[#C9A86A]">
                   {t("nav.shop")}
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Brand - uses provided gold logo */}
+          {/* Brand - uses provided gold logo - 50% bigger then 25% smaller = 72px */}
           <div className="text-center md:text-right">
             <img
               src="/logo.svg"
               alt="Al Meknassi Bijoux"
-              className="h-[64px] w-auto object-contain mx-auto md:ml-auto md:mr-0"
+              className="h-[72px] w-auto object-contain mx-auto md:ml-auto md:mr-0"
             />
-            <p className="text-sm text-secondary mt-4 leading-relaxed">
+            <p className="text-sm text-white/60 mt-4 leading-relaxed">
               {t("footer.brandDesc")
                 .split("<br/>")
                 .map((part, i, arr) => (
@@ -84,26 +84,26 @@ export default function Footer() {
               <SocialLink href="https://www.facebook.com/share/195AwDmTGq/">
                 <FacebookIcon />
               </SocialLink>
-              <SocialLink href="#">
-                <PinterestIcon />
+              <SocialLink href="https://www.tiktok.com">
+                <TikTokIcon />
               </SocialLink>
             </div>
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-secondary">
+        <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-white/50">
           <p>{t("footer.copyright")}</p>
           <div className="flex gap-5">
-            <Link to="/" className="hover:text-primary">
+            <Link to="/" className="hover:text-[#C9A86A]">
               {t("footer.payment")}
             </Link>
-            <Link to="/" className="hover:text-primary">
+            <Link to="/" className="hover:text-[#C9A86A]">
               {t("footer.shippingReturns")}
             </Link>
-            <Link to="/" className="hover:text-primary">
+            <Link to="/" className="hover:text-[#C9A86A]">
               {t("footer.giftCards")}
             </Link>
-            <span className="hover:text-primary cursor-default">{t("footer.privacy")}</span>
+            <span className="hover:text-[#C9A86A] cursor-default">{t("footer.privacy")}</span>
           </div>
         </div>
       </div>
@@ -114,9 +114,9 @@ export default function Footer() {
 function TrustItem({ icon, title, subtitle }) {
   return (
     <div className="flex flex-col items-center gap-2">
-      <div className="text-primary">{icon}</div>
-      <p className="text-sm font-medium text-primary">{title}</p>
-      <p className="text-xs text-secondary">{subtitle}</p>
+      <div className="text-[#C9A86A]">{icon}</div>
+      <p className="text-sm font-medium text-white">{title}</p>
+      <p className="text-xs text-white/60">{subtitle}</p>
     </div>
   );
 }
@@ -127,7 +127,7 @@ function SocialLink({ children, href }) {
       href={href}
       target={isExternal ? "_blank" : undefined}
       rel={isExternal ? "noopener noreferrer" : undefined}
-      className="w-9 h-9 border border-border flex items-center justify-center hover:border-primary hover:bg-primary hover:text-white transition-all text-secondary"
+      className="w-9 h-9 border border-white/15 flex items-center justify-center hover:border-[#C9A86A] hover:bg-[#C9A86A] hover:text-black transition-all text-white/70"
     >
       {children}
     </a>
@@ -144,33 +144,17 @@ function SupportIcon() {
 }
 function SecureIcon() {
   return (
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
-      <rect x="3" y="4" width="18" height="16" rx="1" />
-      <path d="M7 8h.01M12 8h.01M17 8h.01M7 12h.01M12 12h.01" />
-      <path d="M3 10h18" />
-    </svg>
+    <img src="https://i.ibb.co/qMFMhRRv/lock.png" alt="secured payment" width="28" height="28" loading="lazy" decoding="async" className="w-7 h-7 object-contain" />
   );
 }
 function ReturnIcon() {
   return (
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
-      <path d="M17 1l4 4-4 4" />
-      <path d="M3 11V9a4 4 0 0 1 4-4h14" />
-      <path d="M7 23l-4-4 4-4" />
-      <path d="M21 13v2a4 4 0 0 1-4 4H3" />
-    </svg>
+    <img src="https://i.ibb.co/WWx00nJQ/badge.png" alt="returns" width="28" height="28" loading="lazy" decoding="async" className="w-7 h-7 object-contain" />
   );
 }
 function ShippingIcon() {
   return (
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
-      <rect x="1" y="3" width="15" height="13" />
-      <path d="M16 8h4l3 6v3h-7V8z" />
-      <circle cx="5.5" cy="18.5" r="2.5" />
-      <circle cx="18.5" cy="18.5" r="2.5" />
-      <path d="M3 9h9" />
-      <path d="M6 13H3" />
-    </svg>
+    <img src="https://i.ibb.co/wFPQrH3p/delivery-truck.png" alt="shipping" width="28" height="28" loading="lazy" decoding="async" className="w-7 h-7 object-contain" />
   );
 }
 function PhoneIcon() {
@@ -182,24 +166,16 @@ function PhoneIcon() {
 }
 function InstagramIcon() {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <rect x="2" y="2" width="20" height="20" rx="5" />
-      <circle cx="12" cy="12" r="4" />
-      <circle cx="17.5" cy="6.5" r="1.5" />
-    </svg>
+    <img src="https://i.ibb.co/Ld9f7tdy/instagram.png" alt="instagram" width="17" height="17" loading="lazy" decoding="async" className="w-[17px] h-[17px] object-contain" />
   );
 }
 function FacebookIcon() {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-    </svg>
+    <img src="https://i.ibb.co/DDk9hc27/facebook.png" alt="facebook" width="17" height="17" loading="lazy" decoding="async" className="w-[17px] h-[17px] object-contain" />
   );
 }
-function PinterestIcon() {
+function TikTokIcon() {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <path d="M12 2a10 10 0 0 0-3.2 19.4c-.1-.8-.2-2 .0-2.8l1.1-4.7c-.3-.5-.4-1.1-.4-1.7 0-1.6 1-2.8 2.2-2.8.9 0 1.4.7 1.4 1.5 0 .9-.6 2.3-.9 3.5-.3 1 .2 1.9 1.2 1.9 1.5 0 2.7-1.6 2.7-3.9 0-2-1.4-3.4-3.4-3.4-2.3 0-3.6 1.7-3.6 3.5 0 1 .4 2 .8 2.6l.3.4-.3 1c0 .4-.1.8-.2 1.1A10 10 0 0 0 12 2z" />
-    </svg>
+    <img src="https://i.ibb.co/2YKNsQsb/tiktok.png" alt="tiktok" width="17" height="17" loading="lazy" decoding="async" className="w-[17px] h-[17px] object-contain" />
   );
 }

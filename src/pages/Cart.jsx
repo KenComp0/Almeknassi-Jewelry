@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Section from "../components/Section";
 import Button from "../components/Button";
 import MarbleBackground from "../components/MarbleBackground";
 import { useLanguage } from "../i18n/LanguageContext";
+import usePageMeta from "../hooks/usePageMeta";
 
 export default function Cart({ cart, onUpdateQty, onRemove }) {
   const { t, formatPrice, lang } = useLanguage();
@@ -16,7 +17,24 @@ export default function Cart({ cart, onUpdateQty, onRemove }) {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  usePageMeta({
+    title: `${t("cart.title")} — Al Meknassi Bijoux`,
+    description:
+      lang === "fr"
+        ? "Votre panier Al Meknassi Bijoux. Finalisez votre commande via WhatsApp, paiement à la livraison."
+        : lang === "ar"
+        ? "سلة التسوق الخاصة بك. أتمموا طلبكم عبر واتساب، الدفع عند الاستلام."
+        : "Your Al Meknassi Jewelry cart. Checkout via WhatsApp, cash on delivery.",
+    path: "/cart",
+  });
+
   const handleWhatsAppOrder = () => setShowOrder(true);
+
+  useEffect(() => {
+    const open = () => setShowOrder(true);
+    window.addEventListener("open-order", open);
+    return () => window.removeEventListener("open-order", open);
+  }, []);
 
   const validate = () => {
     const e = {};
@@ -271,7 +289,7 @@ export default function Cart({ cart, onUpdateQty, onRemove }) {
                     <input
                       value={form.name}
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
-                      placeholder={lang === "fr" ? "Ex: Fatima Alami" : lang === "ar" ? "مثال: فاطمة العلمي" : "Ex: John Doe"}
+                      placeholder={lang === "fr" ? "Nom complet" : lang === "ar" ? "الاسم الكامل" : "Full name"}
                       maxLength={80}
                       autoComplete="name"
                       className={`mt-1.5 w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary ${errors.name ? "border-red-400" : "border-border"}`}
@@ -285,7 +303,7 @@ export default function Cart({ cart, onUpdateQty, onRemove }) {
                     <input
                       value={form.phone}
                       onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                      placeholder="06 12 34 56 78"
+                      placeholder="06 00 00 00 00"
                       type="tel"
                       inputMode="tel"
                       maxLength={20}

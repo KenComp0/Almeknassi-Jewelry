@@ -19,9 +19,9 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
       product: "Produit",
       qty: "Quantité",
       name: "Nom complet *",
-      namePh: "Ex: Fatima Alami",
+      namePh: "Nom complet",
       phone: "Numéro de téléphone *",
-      phonePh: "06 12 34 56 78",
+      phonePh: "06 00 00 00 00",
       email: "E-mail (optionnel)",
       emailPh: "exemple@email.com",
       address: "Adresse de livraison *",
@@ -38,9 +38,9 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
       product: "Product",
       qty: "Quantity",
       name: "Full name *",
-      namePh: "Ex: John Doe",
+      namePh: "Full name",
       phone: "Phone number *",
-      phonePh: "06 12 34 56 78",
+      phonePh: "06 00 00 00 00",
       email: "E-mail (optional)",
       emailPh: "example@email.com",
       address: "Delivery address *",
@@ -57,9 +57,9 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
       product: "المنتج",
       qty: "الكمية",
       name: "الاسم الكامل *",
-      namePh: "مثال: فاطمة العلمي",
+      namePh: "الاسم الكامل",
       phone: "رقم الهاتف *",
-      phonePh: "06 12 34 56 78",
+      phonePh: "06 00 00 00 00",
       email: "البريد (اختياري)",
       emailPh: "example@email.com",
       address: "عنوان التوصيل *",
@@ -164,7 +164,7 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
               </div>
 
               <div className="mt-5 bg-[#FDFBF7] border border-[#E8D5B5] rounded-xl p-3 flex gap-3">
-                <img src={product.images[0]} alt={name} className="w-16 h-16 object-cover rounded-lg border border-white" />
+                <img src="https://i.ibb.co/kVxmTJbw/displayed.webp" alt={name} className="w-16 h-16 object-contain bg-white rounded-lg border border-white p-1" />
                 <div className="flex-1 min-w-0">
                   <p className="text-xs tracking-widest uppercase text-[#B8934A]">{product.category}</p>
                   <p className="font-medium text-sm leading-tight truncate">{name}</p>
