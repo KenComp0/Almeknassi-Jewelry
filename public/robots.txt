@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://almeknassijewelry.com/sitemap.xml
+Sitemap: https://almeknassi.com/sitemap.xml
