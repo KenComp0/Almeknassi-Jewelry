@@ -11,7 +11,7 @@ export default function ProductSchema() {
     brand: { "@type": "Brand", name: "Al Meknassi Jewelry" },
     offers: {
       "@type": "Offer",
-      url: "https://almeknassijewelry.com/product/1",
+      url: "https://almeknassi.com/product/1",
       priceCurrency: "MAD",
       price: "279",
       availability: "https://schema.org/InStock",
