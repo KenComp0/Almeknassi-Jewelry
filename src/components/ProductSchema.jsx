@@ -5,7 +5,7 @@ export default function ProductSchema() {
     "@type": "Product",
     name: "Coffret RADKO Doré",
     alternateName: ["RADKO Gold Set", "طقم الرادكو الذهبي"],
-    image: "https://i.ibb.co/kVxmTJbw/displayed.webp",
+    image: "https://i.ibb.co/fdCrGNR4/black-displayed.webp",
     description:
       "Parure dorée complète : collier, bracelet, bague, boucles + coffret de luxe. Paiement à la livraison partout au Maroc.",
     brand: { "@type": "Brand", name: "Al Meknassi Jewelry" },

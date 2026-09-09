@@ -66,13 +66,15 @@ export default function Home() {
           <p className="text-white/70 mt-4 max-w-2xl mx-auto leading-relaxed text-sm">{t("home.focusedSubtitle")}</p>
         </motion.div>
 
-        <div className="max-w-5xl mx-auto bg-[#111] border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden rounded-2xl min-h-[680px] md:min-h-[620px]" style={{ contain: "layout" }}>
+        <div className="max-w-5xl mx-auto bg-[#111] border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden rounded-2xl min-h-[680px] md:min-h-[620px] relative" style={{ contain: "layout" }}>
+          {/* Whole card navigates to product page; order buttons sit above via z-10 */}
+          <Link to={`/product/${product.id}`} aria-label={name} className="absolute inset-0 z-[1]" />
           <div className="grid grid-cols-1 lg:grid-cols-2">
             {/* Single image - click goes to product page */}
             <div className="relative bg-white p-4 md:p-6">
-              <Link to={`/product/${product.id}`} className="block aspect-square overflow-hidden bg-[#FDFBF7] rounded-2xl product-image group relative">
-                <img src="https://i.ibb.co/kVxmTJbw/displayed.webp" alt={name} width={800} height={800} loading="eager" fetchPriority="high" decoding="async" className="w-full h-full object-cover" />
-              </Link>
+              <div className="block aspect-square overflow-hidden bg-[#FDFBF7] rounded-2xl product-image group relative">
+                <img src="https://i.ibb.co/fdCrGNR4/black-displayed.webp" alt={name} width={800} height={800} loading="eager" fetchPriority="high" decoding="async" className="w-full h-full object-cover" />
+              </div>
               {badge && (
                 <span className="absolute top-6 left-6 bg-primary text-white text-[10px] tracking-widest uppercase px-3 py-1.5 rounded-full">
                   {badge}
@@ -109,7 +111,7 @@ export default function Home() {
                 {details}
               </p>
 
-              <div className="mt-auto pt-8 space-y-3">
+              <div className="mt-auto pt-8 space-y-3 relative z-10">
                 <button
                   onClick={() => setShowOrder(true)}
                   className="w-full bg-black text-white py-4 text-sm font-medium tracking-[0.14em] uppercase hover:bg-[#1a1a1a] transition-colors flex items-center justify-center gap-2 rounded-full shadow-[0_8px_24px_rgba(0,0,0,0.15)]"
