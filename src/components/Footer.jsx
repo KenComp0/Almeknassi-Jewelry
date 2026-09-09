@@ -65,7 +65,7 @@ export default function Footer() {
             <img
               src="/logo.svg"
               alt="Al Meknassi Bijoux"
-              className="h-[72px] w-auto object-contain mx-auto md:ml-auto md:mr-0"
+              className="h-[100px] w-auto object-contain mx-auto md:ml-auto md:mr-0"
             />
             <p className="text-sm text-white/60 mt-4 leading-relaxed">
               {t("footer.brandDesc")

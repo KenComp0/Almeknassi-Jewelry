@@ -70,7 +70,7 @@ export default function Navbar({ cartCount = 0, wishlistCount = 0 }) {
 
         {/* Logo - visible only on small devices - 50% bigger then 25% smaller = 47px */}
         <Link to="/" className="absolute left-1/2 -translate-x-1/2 md:hidden flex items-center justify-center">
-          <img src="/logo.svg" alt="Al Meknassi Bijoux" className="h-[47px] w-auto object-contain" />
+          <img src="/logo.svg" alt="Al Meknassi Bijoux" className="h-[66px] w-auto object-contain" />
         </Link>
 
         {/* Center nav - desktop */}

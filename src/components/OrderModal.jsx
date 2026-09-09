@@ -164,7 +164,7 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
               </div>
 
               <div className="mt-5 bg-[#FDFBF7] border border-[#E8D5B5] rounded-xl p-3 flex gap-3">
-                <img src="https://i.ibb.co/kVxmTJbw/displayed.webp" alt={name} className="w-16 h-16 object-contain bg-white rounded-lg border border-white p-1" />
+                <img src="https://i.ibb.co/fdCrGNR4/black-displayed.webp" alt={name} className="w-16 h-16 object-contain bg-white rounded-lg border border-white p-1" />
                 <div className="flex-1 min-w-0">
                   <p className="text-xs tracking-widest uppercase text-[#B8934A]">{product.category}</p>
                   <p className="font-medium text-sm leading-tight truncate">{name}</p>
@@ -183,7 +183,7 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
                     placeholder={t.namePh}
                     maxLength={80}
                     autoComplete="name"
-                    className={`mt-1.5 w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary ${errors.name ? "border-red-400" : "border-border"}`}
+                    className={`mt-1.5 w-full border rounded-xl px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 bg-white focus:outline-none focus:border-primary ${errors.name ? "border-red-400" : "border-border"}`}
                   />
                   {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name}</p>}
                 </div>
@@ -197,7 +197,7 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
                     inputMode="tel"
                     maxLength={20}
                     autoComplete="tel"
-                    className={`mt-1.5 w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary ${errors.phone ? "border-red-400" : "border-border"}`}
+                    className={`mt-1.5 w-full border rounded-xl px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 bg-white focus:outline-none focus:border-primary ${errors.phone ? "border-red-400" : "border-border"}`}
                   />
                   {errors.phone && <p className="text-xs text-red-500 mt-1">{errors.phone}</p>}
                 </div>
@@ -210,7 +210,7 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
                     type="email"
                     maxLength={100}
                     autoComplete="email"
-                    className={`mt-1.5 w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary ${errors.email ? "border-red-400" : "border-border"}`}
+                    className={`mt-1.5 w-full border rounded-xl px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 bg-white focus:outline-none focus:border-primary ${errors.email ? "border-red-400" : "border-border"}`}
                   />
                   {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email}</p>}
                 </div>
@@ -223,7 +223,7 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
                     rows={3}
                     maxLength={200}
                     autoComplete="street-address"
-                    className={`mt-1.5 w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary resize-none ${errors.address ? "border-red-400" : "border-border"}`}
+                    className={`mt-1.5 w-full border rounded-xl px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 bg-white focus:outline-none focus:border-primary resize-none ${errors.address ? "border-red-400" : "border-border"}`}
                   />
                   {errors.address && <p className="text-xs text-red-500 mt-1">{errors.address}</p>}
                 </div>

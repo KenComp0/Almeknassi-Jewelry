@@ -10,21 +10,21 @@ export const products = [
     price: 279.0,
     originalPrice: 450.0,
     category: "parure",
+    video: "https://res.cloudinary.com/fxsqo85y/video/upload/v1788953770/show.mp4",
+    videoPoster: "https://res.cloudinary.com/fxsqo85y/video/upload/v1788953770/show.jpg",
     images: [
-      "https://i.ibb.co/1JMpSQpB/1-braclet.webp",
-      "https://i.ibb.co/Kpk30G6G/1-small-bracelet.webp",
-      "https://i.ibb.co/fY5Y9yhK/golden-bracely.webp",
-      "https://i.ibb.co/TxMBfdZr/tiny.webp",
-      "https://i.ibb.co/20RwVHcM/4-bracelet-in-the-box.webp",
       "https://i.ibb.co/xSKtkc4h/4-braclet.webp",
-      "https://i.ibb.co/kVxmTJbw/displayed.webp",
-      "https://i.ibb.co/QvQ0ScxK/connections-small.webp",
-      "https://i.ibb.co/9JT3Wmx/box.webp",
+      "https://i.ibb.co/b51jSms9/black-1-braclet.webp",
+      "https://i.ibb.co/HLw87yX0/black-1-small-bracelet.webp",
+      "https://i.ibb.co/WWcZSSmT/black-connections-small.webp",
+      "https://i.ibb.co/nN29cCVn/black-tiny.webp",
+      "https://i.ibb.co/fdCrGNR4/black-displayed.webp",
+      "https://i.ibb.co/38hn0By/black-golden-bracely.webp",
     ],
     landingSmall: [
-      "https://i.ibb.co/Kpk30G6G/1-small-bracelet.webp",
-      "https://i.ibb.co/fY5Y9yhK/golden-bracely.webp",
-      "https://i.ibb.co/TxMBfdZr/tiny.webp",
+      "https://i.ibb.co/HLw87yX0/black-1-small-bracelet.webp",
+      "https://i.ibb.co/38hn0By/black-golden-bracely.webp",
+      "https://i.ibb.co/nN29cCVn/black-tiny.webp",
     ],
     description: {
       fr: "✨ Le luxe de l'or dans chaque détail… Un coffret raffiné qui attire les regards dès le premier coup d'œil.\n\n💎 Une qualité durable, un éclat exceptionnel et un design parfaitement assorti pour une élégance inoubliable.\n\n👑 Ne vous contentez pas d'un joli bijou… Choisissez un coffret qui vous fera vous sentir vraiment unique, et commandez-le dès maintenant.",
@@ -46,7 +46,7 @@ export const products = [
 ];
 
 export const categories = [
-  { id: "parure", name: { fr: "Parure", en: "Set", ar: "طقم" }, image: "https://i.ibb.co/1JMpSQpB/1-braclet.webp", count: 1 },
+  { id: "parure", name: { fr: "Parure", en: "Set", ar: "طقم" }, image: "https://i.ibb.co/b51jSms9/black-1-braclet.webp", count: 1 },
 ];
 
 export const featuredProducts = products;
