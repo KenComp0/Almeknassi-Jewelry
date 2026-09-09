@@ -17,6 +17,10 @@ export default function Navbar({ cartCount = 0, wishlistCount = 0 }) {
 
   useEffect(() => setMobileOpen(false), [location.pathname]);
 
+  // Simple logo variant on product detail pages.
+  const onProduct = location.pathname.startsWith("/product");
+  const logoSrc = onProduct ? "https://i.ibb.co/39BwNLsT/Design-sans-titre-1.webp" : "/logo.svg";
+
   const linkClass = ({ isActive }) =>
     `text-sm tracking-wide transition-colors duration-300 ${
       isActive ? "text-accent" : scrolled ? "text-primary hover:text-accent" : "text-white hover:text-accent drop-shadow"
@@ -24,7 +28,7 @@ export default function Navbar({ cartCount = 0, wishlistCount = 0 }) {
 
   return (
     <header
-      className={`navbar absolute top-0 w-full z-50 border-b transition-all duration-300 ${
+      className={`navbar fixed top-0 left-0 w-full z-50 border-b transition-all duration-300 ${
         scrolled
           ? "scrolled bg-[rgba(255,255,255,0.9)] backdrop-blur-[10px] border-border shadow-soft"
           : "bg-transparent border-transparent"
@@ -70,7 +74,7 @@ export default function Navbar({ cartCount = 0, wishlistCount = 0 }) {
 
         {/* Logo - visible only on small devices - 50% bigger then 25% smaller = 47px */}
         <Link to="/" className="absolute left-1/2 -translate-x-1/2 md:hidden flex items-center justify-center">
-          <img src="/logo.svg" alt="Al Meknassi Bijoux" className="h-[66px] w-auto object-contain" />
+          <img src={logoSrc} alt="Al Meknassi Bijoux" className="h-[66px] w-auto object-contain" />
         </Link>
 
         {/* Center nav - desktop */}

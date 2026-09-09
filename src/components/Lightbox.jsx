@@ -70,7 +70,7 @@ export default function Lightbox({ images, index, onNavigate, onClose, alt }) {
       const t = e.touches;
       if (t.length === 1) {
         lastSingle = pt(t[0]);
-        swipeStart = { x: t[0].clientX, at: Date.now() };
+        swipeStart = { x: t[0].clientX, y: t[0].clientY, at: Date.now() };
       } else if (t.length >= 2) {
         multiAt = Date.now();
         pinchStart = { dist: gap(pt(t[0]), pt(t[1])), scale: live.current.scale };
@@ -102,14 +102,24 @@ export default function Lightbox({ images, index, onNavigate, onClose, alt }) {
         if (pinchStart) multiAt = Date.now();
         if (swipeStart && e.changedTouches.length > 0) {
           const dx = e.changedTouches[0].clientX - swipeStart.x;
+          const dy = e.changedTouches[0].clientY - swipeStart.y;
           const dt = Date.now() - swipeStart.at;
-          if (live.current.scale <= 1.01 && Math.abs(dx) > 60 && dt < 600) {
-            go(dx < 0 ? 1 : -1);
-            lastSingle = pinchStart = swipeStart = null;
-            return;
+          if (live.current.scale <= 1.01 && dt < 600) {
+            // Swipe up/down -> close viewer.
+            if (Math.abs(dy) > 70 && Math.abs(dy) > Math.abs(dx) * 1.2) {
+              closeRef.current();
+              lastSingle = pinchStart = swipeStart = null;
+              return;
+            }
+            // Swipe sideways -> browse photos.
+            if (Math.abs(dx) > 60) {
+              go(dx < 0 ? 1 : -1);
+              lastSingle = pinchStart = swipeStart = null;
+              return;
+            }
           }
           const now = Date.now();
-          if (now - lastTapAt < 320 && Math.abs(dx) < 12) {
+          if (now - lastTapAt < 320 && Math.abs(dx) < 12 && Math.abs(dy) < 12) {
             if (live.current.scale > 1.01) {
               setScale(1);
               setPos({ x: 0, y: 0 });
@@ -212,7 +222,7 @@ export default function Lightbox({ images, index, onNavigate, onClose, alt }) {
 
       {/* Hint */}
       <p className="absolute bottom-4 inset-x-0 z-10 text-center text-white/40 text-xs pointer-events-none">
-        Pinch or double-tap to zoom • Swipe for next
+        Pinch or double-tap to zoom • Swipe sideways to browse • Swipe up or down to close
       </p>
     </div>
   );

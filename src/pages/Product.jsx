@@ -229,7 +229,7 @@ export default function Product() {
 
       {/* 2️⃣ HERO - dark, no rounded, full width */}
       <section className="relative bg-transparent">
-        <div className="w-full">
+        <div className="funnel-pad container-luxury max-w-5xl mx-auto px-4">
           <img src={img.heroFull} alt={name} onClick={() => setLightbox(0)} className="w-full h-auto object-cover cursor-zoom-in" width={1200} height={900} loading="eager" fetchPriority="high" decoding="async" />
         </div>
         <div className="container-luxury py-6 text-center" dir={lang === "ar" ? "rtl" : "ltr"}>
@@ -246,7 +246,7 @@ export default function Product() {
 
       {/* 3️⃣ Chain - dark, no rounded, full visible */}
       <section className="bg-transparent">
-        <div className="w-full">
+        <div className="funnel-pad container-luxury max-w-5xl mx-auto px-4">
           <img src={img.chain} alt="chain" onClick={() => setLightbox(1)} className="w-full h-auto object-cover cursor-zoom-in" loading="lazy" decoding="async" width={900} height={900} />
         </div>
         <div className="container-luxury max-w-3xl mx-auto text-center py-6 mt-6 mb-2">
@@ -257,7 +257,7 @@ export default function Product() {
 
       {/* 4️⃣ Little one - dark, no background, no rounded, full visible */}
       <section className="bg-transparent">
-        <div className="w-full">
+        <div className="funnel-pad container-luxury max-w-5xl mx-auto px-4">
           <img src={img.littleOne} alt="little bracelet" onClick={() => setLightbox(2)} className="w-full h-auto object-cover cursor-zoom-in" loading="lazy" decoding="async" width={900} height={900} />
         </div>
         <div className="container-luxury max-w-3xl mx-auto text-center py-6 mt-6 mb-2">
@@ -268,7 +268,7 @@ export default function Product() {
 
       {/* 5️⃣ Earrings - dark, no background, no rounded, full visible */}
       <section className="bg-transparent">
-        <div className="w-full">
+        <div className="funnel-pad container-luxury max-w-5xl mx-auto px-4">
           <img src={img.earrings} alt="earrings" onClick={() => setLightbox(3)} className="w-full h-auto object-cover cursor-zoom-in" loading="lazy" decoding="async" width={700} height={500} />
         </div>
         <div className="container-luxury max-w-3xl mx-auto text-center py-6 mt-6 mb-2">
@@ -279,7 +279,7 @@ export default function Product() {
 
       {/* 6️⃣ Ring - dark, no background, no rounded, full visible */}
       <section className="bg-transparent">
-        <div className="w-full">
+        <div className="funnel-pad container-luxury max-w-5xl mx-auto px-4">
           <img src={img.ring} alt="ring" onClick={() => setLightbox(4)} className="w-full h-auto object-cover cursor-zoom-in" loading="lazy" decoding="async" width={600} height={600} />
         </div>
         <div className="container-luxury max-w-3xl mx-auto text-center py-6 mt-6 mb-2">
@@ -291,7 +291,7 @@ export default function Product() {
 
       {/* 7️⃣ Bust - dark, no background, no rounded, full visible */}
       <section className="bg-transparent">
-        <div className="w-full">
+        <div className="funnel-pad container-luxury max-w-5xl mx-auto px-4">
           <img src={img.bust} alt="bust" onClick={() => setLightbox(5)} className="w-full h-auto object-cover cursor-zoom-in" loading="lazy" decoding="async" width={900} height={1100} />
         </div>
         <div className="container-luxury max-w-3xl mx-auto text-center py-6 mt-6 mb-2">
@@ -302,7 +302,7 @@ export default function Product() {
 
       {/* 8️⃣ Clasp finale - dark, no background, no rounded, full visible */}
       <section className="bg-transparent">
-        <div className="w-full">
+        <div className="funnel-pad container-luxury max-w-5xl mx-auto px-4">
           <img src={img.clasp} alt="clasp" onClick={() => setLightbox(6)} className="w-full h-auto object-cover cursor-zoom-in" loading="lazy" decoding="async" width={700} height={700} />
         </div>
         <div className="container-luxury max-w-3xl mx-auto text-center py-6 mt-6 mb-2">
@@ -355,7 +355,12 @@ export default function Product() {
           <p className="text-xs tracking-[0.3em] uppercase text-[#B8934A]">{tFunnel.sec11_sub}</p>
           <h2 className="font-playfair text-3xl mt-2 text-[#C9A86A]" style={{ fontFamily: "'Cormorant Garamond', 'Noto Serif Arabic', serif", fontWeight: 500 }}>{tFunnel.sec11_title}</h2>
           <p className="text-sm whitespace-pre-line mt-3 leading-relaxed">{tFunnel.sec11_list}</p>
-          <p className="text-2xl font-semibold mt-4">{tFunnel.sec11_price}</p>
+          <div className="flex items-center justify-center gap-3 mt-4">
+            <p className="text-2xl font-semibold">{tFunnel.sec11_price}</p>
+            {product.originalPrice && (
+              <span className="text-white/40 line-through text-sm">{formatPrice(product.originalPrice)}</span>
+            )}
+          </div>
           <ul className="mt-3 space-y-1 text-sm text-secondary">
             {tFunnel.sec11_benefits.map((b) => (
               <li key={b}>{b}</li>
@@ -369,10 +374,7 @@ export default function Product() {
       </section>
 
       <ProductSchema />
-      <OrderModal isOpen={showOrder} onClose={() => setShowOrder(false)} product={product} qty={1} />
-      {lightbox >= 0 && (
-        <Lightbox images={gallery} index={lightbox} onNavigate={setLightbox} onClose={() => setLightbox(-1)} alt={name} />
-      )}
+      <style>{`.funnel-pad img{border-radius:1rem;display:block}`}</style>
 
       {/* Floating right Cart + Commander ici - always shown (like WhatsApp left) */}
       <div className="fixed bottom-24 md:bottom-5 right-5 z-40 flex flex-col items-center gap-1.5">
@@ -388,10 +390,15 @@ export default function Product() {
             <circle cx="12" cy="12" r="1" fill="white" stroke="none" />
           </svg>
         </button>
-        <span className="bg-white border border-black/10 text-black text-[11px] font-medium tracking-wide px-3 py-1 rounded-full shadow-md whitespace-nowrap">
+        <span className="bg-[#C9A86A] border border-[#C9A86A] text-black text-[11px] font-medium tracking-wide px-3 py-1 rounded-full shadow-md whitespace-nowrap">
           {lang === "fr" ? "Commander ici" : lang === "ar" ? "اطلبي هنا" : "Order here"}
         </span>
       </div>
+      {/* Overlays live at root level so header/nav never paint above them */}
+      <OrderModal isOpen={showOrder} onClose={() => setShowOrder(false)} product={product} qty={1} />
+      {lightbox >= 0 && (
+        <Lightbox images={gallery} index={lightbox} onNavigate={setLightbox} onClose={() => setLightbox(-1)} alt={name} />
+      )}
       </div>
     </div>
   );

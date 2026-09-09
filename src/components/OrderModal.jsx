@@ -149,7 +149,7 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
             exit={{ scale: 0.96, y: 12, opacity: 0 }}
             transition={{ duration: 0.25 }}
             onClick={(e) => e.stopPropagation()}
-            className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-auto shadow-[0_20px_60px_rgba(0,0,0,0.2)]"
+            className="bg-white text-gray-900 rounded-2xl w-full max-w-lg max-h-[90vh] overflow-auto shadow-[0_20px_60px_rgba(0,0,0,0.2)]"
             dir={lang === "ar" ? "rtl" : "ltr"}
           >
             <div className="p-6 md:p-7">
@@ -158,7 +158,7 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
                   <h3 className="font-playfair text-xl md:text-2xl">{t.title}</h3>
                   <p className="text-xs text-secondary mt-1">{t.subtitle}</p>
                 </div>
-                <button onClick={onClose} className="w-8 h-8 rounded-full border border-border flex items-center justify-center hover:bg-muted">
+                <button onClick={onClose} className="w-8 h-8 shrink-0 rounded-full border border-gray-300 bg-gray-100 text-gray-900 flex items-center justify-center hover:bg-gray-200">
                   ✕
                 </button>
               </div>
