@@ -84,7 +84,7 @@ export default function Footer() {
               <SocialLink href="https://www.facebook.com/share/195AwDmTGq/">
                 <FacebookIcon />
               </SocialLink>
-              <SocialLink href="https://www.tiktok.com">
+              <SocialLink href="https://www.tiktok.com/@almeknassi20">
                 <TikTokIcon />
               </SocialLink>
             </div>
