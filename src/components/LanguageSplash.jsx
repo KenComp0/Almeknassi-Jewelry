@@ -48,7 +48,13 @@ export default function LanguageSplash({ show, onSelect }) {
               ))}
             </div>
           </motion.div>
-          <p className="mt-8 text-xs tracking-[0.3em] uppercase text-white/60">Choisissez votre langue • Choose your language</p>
+          <p className="mt-8 px-6 text-center text-xs tracking-[0.3em] uppercase text-white/60 leading-loose">
+            <span className="block md:inline">Choisissez votre langue</span>
+            <span className="hidden md:inline"> • </span>
+            <span className="block md:inline">Choose your language</span>
+            <span className="hidden md:inline"> • </span>
+            <span className="block md:inline">اختاروا لغتكم</span>
+          </p>
         </motion.div>
       )}
     </AnimatePresence>
