@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { products } from "../data/products";
 import { useLanguage } from "../i18n/LanguageContext";
 import OrderModal from "../components/OrderModal";
+import Lightbox from "../components/Lightbox";
 import ProductSchema from "../components/ProductSchema";
 import usePageMeta from "../hooks/usePageMeta";
 
@@ -13,6 +14,7 @@ export default function Product() {
   const product = products.find((p) => p.id === (id || "1")) || products[0];
   const name = typeof product.name === "object" ? product.name[lang] : product.name;
   const [showOrder, setShowOrder] = useState(false);
+  const [lightbox, setLightbox] = useState(-1);
   const [isHeroCompact, setIsHeroCompact] = useState(false);
   useEffect(() => {
     const onScroll = () => setIsHeroCompact(window.scrollY > 80);
@@ -184,6 +186,9 @@ export default function Product() {
     clasp: product.images[6],
   };
 
+  // Funnel photos in page order — tap any of them to open the zoom viewer.
+  const gallery = [img.heroFull, img.chain, img.littleOne, img.earrings, img.ring, img.bust, img.clasp];
+
   return (
     <div
       className="relative text-white"
@@ -225,7 +230,7 @@ export default function Product() {
       {/* 2️⃣ HERO - dark, no rounded, full width */}
       <section className="relative bg-transparent">
         <div className="w-full">
-          <img src={img.heroFull} alt={name} className="w-full h-auto object-cover" width={1200} height={900} loading="eager" fetchPriority="high" decoding="async" />
+          <img src={img.heroFull} alt={name} onClick={() => setLightbox(0)} className="w-full h-auto object-cover cursor-zoom-in" width={1200} height={900} loading="eager" fetchPriority="high" decoding="async" />
         </div>
         <div className="container-luxury py-6 text-center" dir={lang === "ar" ? "rtl" : "ltr"}>
           <h1 className="font-playfair text-2xl md:text-3xl leading-tight text-[#C9A86A]" style={{ fontFamily: "'Cormorant Garamond', 'Noto Serif Arabic', serif", fontWeight: 500 }}>{tFunnel.sec1_title}</h1>
@@ -242,7 +247,7 @@ export default function Product() {
       {/* 3️⃣ Chain - dark, no rounded, full visible */}
       <section className="bg-transparent">
         <div className="w-full">
-          <img src={img.chain} alt="chain" className="w-full h-auto object-cover" loading="lazy" decoding="async" width={900} height={900} />
+          <img src={img.chain} alt="chain" onClick={() => setLightbox(1)} className="w-full h-auto object-cover cursor-zoom-in" loading="lazy" decoding="async" width={900} height={900} />
         </div>
         <div className="container-luxury max-w-3xl mx-auto text-center py-6 mt-6 mb-2">
           <h2 className="font-playfair text-xl text-[#C9A86A]">{tFunnel.sec3_title}</h2>
@@ -253,7 +258,7 @@ export default function Product() {
       {/* 4️⃣ Little one - dark, no background, no rounded, full visible */}
       <section className="bg-transparent">
         <div className="w-full">
-          <img src={img.littleOne} alt="little bracelet" className="w-full h-auto object-cover" loading="lazy" decoding="async" width={900} height={900} />
+          <img src={img.littleOne} alt="little bracelet" onClick={() => setLightbox(2)} className="w-full h-auto object-cover cursor-zoom-in" loading="lazy" decoding="async" width={900} height={900} />
         </div>
         <div className="container-luxury max-w-3xl mx-auto text-center py-6 mt-6 mb-2">
           <h2 className="font-playfair text-xl text-[#C9A86A]">{tFunnel.sec4b_title}</h2>
@@ -264,7 +269,7 @@ export default function Product() {
       {/* 5️⃣ Earrings - dark, no background, no rounded, full visible */}
       <section className="bg-transparent">
         <div className="w-full">
-          <img src={img.earrings} alt="earrings" className="w-full h-auto object-cover" loading="lazy" decoding="async" width={700} height={500} />
+          <img src={img.earrings} alt="earrings" onClick={() => setLightbox(3)} className="w-full h-auto object-cover cursor-zoom-in" loading="lazy" decoding="async" width={700} height={500} />
         </div>
         <div className="container-luxury max-w-3xl mx-auto text-center py-6 mt-6 mb-2">
           <h2 className="font-playfair text-xl text-[#C9A86A]">{tFunnel.sec7_title}</h2>
@@ -275,7 +280,7 @@ export default function Product() {
       {/* 6️⃣ Ring - dark, no background, no rounded, full visible */}
       <section className="bg-transparent">
         <div className="w-full">
-          <img src={img.ring} alt="ring" className="w-full h-auto object-cover" loading="lazy" decoding="async" width={600} height={600} />
+          <img src={img.ring} alt="ring" onClick={() => setLightbox(4)} className="w-full h-auto object-cover cursor-zoom-in" loading="lazy" decoding="async" width={600} height={600} />
         </div>
         <div className="container-luxury max-w-3xl mx-auto text-center py-6 mt-6 mb-2">
           <h2 className="font-playfair text-xl text-[#C9A86A]">{tFunnel.sec6_title}</h2>
@@ -287,7 +292,7 @@ export default function Product() {
       {/* 7️⃣ Bust - dark, no background, no rounded, full visible */}
       <section className="bg-transparent">
         <div className="w-full">
-          <img src={img.bust} alt="bust" className="w-full h-auto object-cover" loading="lazy" decoding="async" width={900} height={1100} />
+          <img src={img.bust} alt="bust" onClick={() => setLightbox(5)} className="w-full h-auto object-cover cursor-zoom-in" loading="lazy" decoding="async" width={900} height={1100} />
         </div>
         <div className="container-luxury max-w-3xl mx-auto text-center py-6 mt-6 mb-2">
           <h2 className="font-playfair text-xl text-[#C9A86A]">{tFunnel.sec5_title}</h2>
@@ -298,7 +303,7 @@ export default function Product() {
       {/* 8️⃣ Clasp finale - dark, no background, no rounded, full visible */}
       <section className="bg-transparent">
         <div className="w-full">
-          <img src={img.clasp} alt="clasp" className="w-full h-auto object-cover" loading="lazy" decoding="async" width={700} height={700} />
+          <img src={img.clasp} alt="clasp" onClick={() => setLightbox(6)} className="w-full h-auto object-cover cursor-zoom-in" loading="lazy" decoding="async" width={700} height={700} />
         </div>
         <div className="container-luxury max-w-3xl mx-auto text-center py-6 mt-6 mb-2">
           <h2 className="font-playfair text-xl text-[#C9A86A]">{tFunnel.sec4_title}</h2>
@@ -365,6 +370,9 @@ export default function Product() {
 
       <ProductSchema />
       <OrderModal isOpen={showOrder} onClose={() => setShowOrder(false)} product={product} qty={1} />
+      {lightbox >= 0 && (
+        <Lightbox images={gallery} index={lightbox} onNavigate={setLightbox} onClose={() => setLightbox(-1)} alt={name} />
+      )}
 
       {/* Floating right Cart + Commander ici - always shown (like WhatsApp left) */}
       <div className="fixed bottom-24 md:bottom-5 right-5 z-40 flex flex-col items-center gap-1.5">
