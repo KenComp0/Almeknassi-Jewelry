@@ -186,8 +186,11 @@ export default function Product() {
     clasp: product.images[6],
   };
 
-  // Funnel photos in page order — tap any of them to open the zoom viewer.
-  const gallery = [img.heroFull, img.chain, img.littleOne, img.earrings, img.ring, img.bust, img.clasp];
+  // Viewer items in page order: video first, then the 7 photos.
+  const gallery = [
+    { type: "video", src: product.video, poster: product.videoPoster },
+    ...[img.heroFull, img.chain, img.littleOne, img.earrings, img.ring, img.bust, img.clasp].map((src) => ({ type: "image", src })),
+  ];
 
   return (
     <div
@@ -205,7 +208,7 @@ export default function Product() {
       {/* 1️⃣ VIDEO - real video first, autoplay muted loop */}
       <section className="bg-transparent py-0">
         <div className="w-full">
-          <div className="relative w-full aspect-video overflow-hidden bg-black">
+          <div className="relative w-full overflow-hidden bg-black cursor-zoom-in" onClick={() => setLightbox(0)}>
             <video
               src={product.video}
               poster={product.videoPoster}
@@ -214,8 +217,9 @@ export default function Product() {
               loop
               playsInline
               preload="metadata"
-              className="w-full h-full object-cover"
+              className="w-full h-auto max-h-[75vh] object-contain mx-auto pointer-events-none"
             />
+            <span className="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-2.5 py-1 rounded-full pointer-events-none">⛶</span>
           </div>
           <h2 className="font-playfair text-xl mt-5 text-[#C9A86A] text-center">{tFunnel.sec2_title}</h2>
           <p className="text-secondary text-sm mt-2 max-w-xl mx-auto text-center">{tFunnel.sec2_desc}</p>
@@ -230,7 +234,7 @@ export default function Product() {
       {/* 2️⃣ HERO - dark, no rounded, full width */}
       <section className="relative bg-transparent">
         <div className="funnel-pad container-luxury max-w-5xl mx-auto px-4">
-          <img src={img.heroFull} alt={name} onClick={() => setLightbox(0)} className="w-full h-auto object-cover cursor-zoom-in" width={1200} height={900} loading="eager" fetchPriority="high" decoding="async" />
+          <img src={img.heroFull} alt={name} onClick={() => setLightbox(1)} className="w-full h-auto object-cover cursor-zoom-in" width={1200} height={900} loading="eager" fetchPriority="high" decoding="async" />
         </div>
         <div className="container-luxury py-6 text-center" dir={lang === "ar" ? "rtl" : "ltr"}>
           <h1 className="font-playfair text-2xl md:text-3xl leading-tight text-[#C9A86A]" style={{ fontFamily: "'Cormorant Garamond', 'Noto Serif Arabic', serif", fontWeight: 500 }}>{tFunnel.sec1_title}</h1>
@@ -247,7 +251,7 @@ export default function Product() {
       {/* 3️⃣ Chain - dark, no rounded, full visible */}
       <section className="bg-transparent">
         <div className="funnel-pad container-luxury max-w-5xl mx-auto px-4">
-          <img src={img.chain} alt="chain" onClick={() => setLightbox(1)} className="w-full h-auto object-cover cursor-zoom-in" loading="lazy" decoding="async" width={900} height={900} />
+          <img src={img.chain} alt="chain" onClick={() => setLightbox(2)} className="w-full h-auto object-cover cursor-zoom-in" loading="lazy" decoding="async" width={900} height={900} />
         </div>
         <div className="container-luxury max-w-3xl mx-auto text-center py-6 mt-6 mb-2">
           <h2 className="font-playfair text-xl text-[#C9A86A]">{tFunnel.sec3_title}</h2>
@@ -258,7 +262,7 @@ export default function Product() {
       {/* 4️⃣ Little one - dark, no background, no rounded, full visible */}
       <section className="bg-transparent">
         <div className="funnel-pad container-luxury max-w-5xl mx-auto px-4">
-          <img src={img.littleOne} alt="little bracelet" onClick={() => setLightbox(2)} className="w-full h-auto object-cover cursor-zoom-in" loading="lazy" decoding="async" width={900} height={900} />
+          <img src={img.littleOne} alt="little bracelet" onClick={() => setLightbox(3)} className="w-full h-auto object-cover cursor-zoom-in" loading="lazy" decoding="async" width={900} height={900} />
         </div>
         <div className="container-luxury max-w-3xl mx-auto text-center py-6 mt-6 mb-2">
           <h2 className="font-playfair text-xl text-[#C9A86A]">{tFunnel.sec4b_title}</h2>
@@ -269,7 +273,7 @@ export default function Product() {
       {/* 5️⃣ Earrings - dark, no background, no rounded, full visible */}
       <section className="bg-transparent">
         <div className="funnel-pad container-luxury max-w-5xl mx-auto px-4">
-          <img src={img.earrings} alt="earrings" onClick={() => setLightbox(3)} className="w-full h-auto object-cover cursor-zoom-in" loading="lazy" decoding="async" width={700} height={500} />
+          <img src={img.earrings} alt="earrings" onClick={() => setLightbox(4)} className="w-full h-auto object-cover cursor-zoom-in" loading="lazy" decoding="async" width={700} height={500} />
         </div>
         <div className="container-luxury max-w-3xl mx-auto text-center py-6 mt-6 mb-2">
           <h2 className="font-playfair text-xl text-[#C9A86A]">{tFunnel.sec7_title}</h2>
@@ -280,7 +284,7 @@ export default function Product() {
       {/* 6️⃣ Ring - dark, no background, no rounded, full visible */}
       <section className="bg-transparent">
         <div className="funnel-pad container-luxury max-w-5xl mx-auto px-4">
-          <img src={img.ring} alt="ring" onClick={() => setLightbox(4)} className="w-full h-auto object-cover cursor-zoom-in" loading="lazy" decoding="async" width={600} height={600} />
+          <img src={img.ring} alt="ring" onClick={() => setLightbox(5)} className="w-full h-auto object-cover cursor-zoom-in" loading="lazy" decoding="async" width={600} height={600} />
         </div>
         <div className="container-luxury max-w-3xl mx-auto text-center py-6 mt-6 mb-2">
           <h2 className="font-playfair text-xl text-[#C9A86A]">{tFunnel.sec6_title}</h2>
@@ -292,7 +296,7 @@ export default function Product() {
       {/* 7️⃣ Bust - dark, no background, no rounded, full visible */}
       <section className="bg-transparent">
         <div className="funnel-pad container-luxury max-w-5xl mx-auto px-4">
-          <img src={img.bust} alt="bust" onClick={() => setLightbox(5)} className="w-full h-auto object-cover cursor-zoom-in" loading="lazy" decoding="async" width={900} height={1100} />
+          <img src={img.bust} alt="bust" onClick={() => setLightbox(6)} className="w-full h-auto object-cover cursor-zoom-in" loading="lazy" decoding="async" width={900} height={1100} />
         </div>
         <div className="container-luxury max-w-3xl mx-auto text-center py-6 mt-6 mb-2">
           <h2 className="font-playfair text-xl text-[#C9A86A]">{tFunnel.sec5_title}</h2>
@@ -303,7 +307,7 @@ export default function Product() {
       {/* 8️⃣ Clasp finale - dark, no background, no rounded, full visible */}
       <section className="bg-transparent">
         <div className="funnel-pad container-luxury max-w-5xl mx-auto px-4">
-          <img src={img.clasp} alt="clasp" onClick={() => setLightbox(6)} className="w-full h-auto object-cover cursor-zoom-in" loading="lazy" decoding="async" width={700} height={700} />
+          <img src={img.clasp} alt="clasp" onClick={() => setLightbox(7)} className="w-full h-auto object-cover cursor-zoom-in" loading="lazy" decoding="async" width={700} height={700} />
         </div>
         <div className="container-luxury max-w-3xl mx-auto text-center py-6 mt-6 mb-2">
           <h2 className="font-playfair text-xl text-[#C9A86A]">{tFunnel.sec4_title}</h2>
@@ -376,7 +380,8 @@ export default function Product() {
       <ProductSchema />
       <style>{`.funnel-pad img{border-radius:1rem;display:block}`}</style>
 
-      {/* Floating right Cart + Commander ici - always shown (like WhatsApp left) */}
+      {/* Floating right Cart + Commander ici - hidden while the order form is open */}
+      {!showOrder && (
       <div className="fixed bottom-24 md:bottom-5 right-5 z-40 flex flex-col items-center gap-1.5">
         <button
           onClick={() => setShowOrder(true)}
@@ -394,10 +399,11 @@ export default function Product() {
           {lang === "fr" ? "Commander ici" : lang === "ar" ? "اطلبي هنا" : "Order here"}
         </span>
       </div>
+      )}
       {/* Overlays live at root level so header/nav never paint above them */}
       <OrderModal isOpen={showOrder} onClose={() => setShowOrder(false)} product={product} qty={1} />
       {lightbox >= 0 && (
-        <Lightbox images={gallery} index={lightbox} onNavigate={setLightbox} onClose={() => setLightbox(-1)} alt={name} />
+        <Lightbox items={gallery} index={lightbox} onNavigate={setLightbox} onClose={() => setLightbox(-1)} alt={name} />
       )}
       </div>
     </div>

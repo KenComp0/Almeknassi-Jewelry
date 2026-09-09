@@ -71,8 +71,8 @@ export default function Home() {
           <Link to={`/product/${product.id}`} aria-label={name} className="absolute inset-0 z-[1]" />
           <div className="grid grid-cols-1 lg:grid-cols-2">
             {/* Single image - click goes to product page */}
-            <div className="relative bg-white p-4 md:p-6">
-              <div className="block aspect-square overflow-hidden bg-[#FDFBF7] rounded-2xl product-image group relative">
+            <div className="relative bg-black p-4 md:p-6">
+              <div className="block aspect-square overflow-hidden bg-[#111] rounded-2xl product-image group relative">
                 <img src="https://i.ibb.co/fdCrGNR4/black-displayed.webp" alt={name} width={800} height={800} loading="eager" fetchPriority="high" decoding="async" className="w-full h-full object-cover" />
               </div>
               {badge && (

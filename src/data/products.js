@@ -13,7 +13,7 @@ export const products = [
     video: "https://res.cloudinary.com/fxsqo85y/video/upload/v1788953770/show.mp4",
     videoPoster: "https://res.cloudinary.com/fxsqo85y/video/upload/v1788953770/show.jpg",
     images: [
-      "https://i.ibb.co/xSKtkc4h/4-braclet.webp",
+      "https://i.ibb.co/KxZfP4fv/image.webp",
       "https://i.ibb.co/b51jSms9/black-1-braclet.webp",
       "https://i.ibb.co/HLw87yX0/black-1-small-bracelet.webp",
       "https://i.ibb.co/WWcZSSmT/black-connections-small.webp",

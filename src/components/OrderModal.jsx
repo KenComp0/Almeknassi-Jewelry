@@ -4,7 +4,7 @@ import { useLanguage } from "../i18n/LanguageContext";
 
 export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
   const { lang, formatPrice } = useLanguage();
-  const [form, setForm] = useState({ name: "", phone: "", email: "", address: "" });
+  const [form, setForm] = useState({ name: "", phone: "", email: "", address: "", size: "" });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -18,6 +18,7 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
       subtitle: "Remplissez vos informations, nous vous contactons sur WhatsApp",
       product: "Produit",
       qty: "Quantité",
+      size: "Taille de bague *",
       name: "Nom complet *",
       namePh: "Nom complet",
       phone: "Numéro de téléphone *",
@@ -37,6 +38,7 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
       subtitle: "Fill your details, we will contact you on WhatsApp",
       product: "Product",
       qty: "Quantity",
+      size: "Ring size *",
       name: "Full name *",
       namePh: "Full name",
       phone: "Phone number *",
@@ -56,6 +58,7 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
       subtitle: "املأ معلوماتك، سنتواصل معك على واتساب",
       product: "المنتج",
       qty: "الكمية",
+      size: "مقاس الخاتم *",
       name: "الاسم الكامل *",
       namePh: "الاسم الكامل",
       phone: "رقم الهاتف *",
@@ -90,6 +93,7 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
     if (!addressTrim) e.address = t.required;
     else if (addressTrim.length < 5) e.address = t.required;
     else if (addressTrim.length > 200) e.address = "200 max";
+    if (!form.size) e.size = t.required;
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -103,19 +107,20 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
     const sanitizedPhone = form.phone.trim().slice(0, 20);
     const sanitizedEmail = form.email.trim().slice(0, 100);
     const sanitizedAddress = form.address.trim().slice(0, 200);
+    const sanitizedSize = form.size;
     const number = (import.meta.env.VITE_WHATSAPP_NUMBER || "212664677347").replace(/\D/g, "");
     const priceStr = formatPrice(product.price * qty);
     let msg = "";
     if (lang === "fr") {
-      msg = `Bonjour Al Meknassi Bijoux! 👋\n\nJe souhaite commander:\n*${name}* x${qty} - ${priceStr}\n\n*Mes informations:*\nNom: ${sanitizedName}\nTéléphone: ${sanitizedPhone}\n`;
+      msg = `Bonjour Al Meknassi Bijoux! 👋\n\nJe souhaite commander:\n*${name}* x${qty} - ${priceStr}\nTaille de bague: ${sanitizedSize}\n\n*Mes informations:*\nNom: ${sanitizedName}\nTéléphone: ${sanitizedPhone}\n`;
       if (sanitizedEmail) msg += `E-mail: ${sanitizedEmail}\n`;
       msg += `Adresse: ${sanitizedAddress}\n\nMerci de confirmer la disponibilité et la livraison.`;
     } else if (lang === "ar") {
-      msg = `مرحبا المكناسي! 👋\n\nأرغب في طلب:\n*${name}* x${qty} - ${priceStr}\n\n*معلوماتي:*\nالاسم: ${sanitizedName}\nالهاتف: ${sanitizedPhone}\n`;
+      msg = `مرحبا المكناسي! 👋\n\nأرغب في طلب:\n*${name}* x${qty} - ${priceStr}\nمقاس الخاتم: ${sanitizedSize}\n\n*معلوماتي:*\nالاسم: ${sanitizedName}\nالهاتف: ${sanitizedPhone}\n`;
       if (sanitizedEmail) msg += `البريد: ${sanitizedEmail}\n`;
       msg += `العنوان: ${sanitizedAddress}\n\nيرجى تأكيد التوفر والتوصيل.`;
     } else {
-      msg = `Hello Al Meknassi Jewelry! 👋\n\nI would like to order:\n*${name}* x${qty} - ${priceStr}\n\n*My details:*\nName: ${sanitizedName}\nPhone: ${sanitizedPhone}\n`;
+      msg = `Hello Al Meknassi Jewelry! 👋\n\nI would like to order:\n*${name}* x${qty} - ${priceStr}\nRing size: ${sanitizedSize}\n\n*My details:*\nName: ${sanitizedName}\nPhone: ${sanitizedPhone}\n`;
       if (sanitizedEmail) msg += `E-mail: ${sanitizedEmail}\n`;
       msg += `Address: ${sanitizedAddress}\n\nPlease confirm availability and delivery.`;
     }
@@ -129,7 +134,7 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
     setTimeout(() => {
       setIsSubmitting(false);
       onClose();
-      setForm({ name: "", phone: "", email: "", address: "" });
+      setForm({ name: "", phone: "", email: "", address: "", size: "" });
     }, 800);
   };
 
@@ -164,7 +169,7 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
               </div>
 
               <div className="mt-5 bg-[#FDFBF7] border border-[#E8D5B5] rounded-xl p-3 flex gap-3">
-                <img src="https://i.ibb.co/fdCrGNR4/black-displayed.webp" alt={name} className="w-16 h-16 object-contain bg-white rounded-lg border border-white p-1" />
+                <img src="https://i.ibb.co/PvXpdPJ9/587-B720-B-1-B7-A-4-ACF-BF04-EA2-BBD47429-C.webp" alt={name} className="w-24 h-24 object-contain bg-white rounded-lg border border-white p-1" />
                 <div className="flex-1 min-w-0">
                   <p className="text-xs tracking-widest uppercase text-[#B8934A]">{product.category}</p>
                   <p className="font-medium text-sm leading-tight truncate">{name}</p>
@@ -175,6 +180,22 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
               </div>
 
               <form onSubmit={handleSubmit} className="mt-6 space-y-4" noValidate>
+                <div>
+                  <label className="text-xs font-medium tracking-wide uppercase">{t.size}</label>
+                  <div className="mt-1.5 flex gap-2">
+                    {["6", "7", "8", "9", "10"].map((s) => (
+                      <button
+                        key={s}
+                        type="button"
+                        onClick={() => setForm({ ...form, size: s })}
+                        className={`flex-1 border rounded-xl py-2.5 text-sm font-medium transition-colors ${form.size === s ? "border-[#C9A86A] bg-[#C9A86A]/10 text-gray-900" : "border-gray-300 text-gray-500 hover:border-gray-400"}`}
+                      >
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                  {errors.size && <p className="text-xs text-red-500 mt-1">{errors.size}</p>}
+                </div>
                 <div>
                   <label className="text-xs font-medium tracking-wide uppercase">{t.name}</label>
                   <input

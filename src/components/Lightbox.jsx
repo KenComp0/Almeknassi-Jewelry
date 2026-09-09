@@ -6,7 +6,7 @@ const MAX_SCALE = 3.5;
 // Fullscreen pinch-to-zoom viewer for the product funnel photos.
 // Phone-first: pinch to zoom, drag to pan, double-tap to toggle zoom,
 // swipe (or arrows) to move between photos, ✕ to close.
-export default function Lightbox({ images, index, onNavigate, onClose, alt }) {
+export default function Lightbox({ items, index, onNavigate, onClose, alt }) {
   const [scale, setScale] = useState(1);
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const stageRef = useRef(null);
@@ -54,7 +54,7 @@ export default function Lightbox({ images, index, onNavigate, onClose, alt }) {
   useEffect(() => {
     const el = stageRef.current;
     if (!el) return;
-    const n = images.length;
+    const n = items.length;
     const go = (d) => navRef.current((indexRef.current + d + n) % n);
 
     let lastSingle = null;
@@ -82,11 +82,17 @@ export default function Lightbox({ images, index, onNavigate, onClose, alt }) {
     const onMove = (e) => {
       const t = e.touches;
       if (t.length >= 2 && pinchStart && pinchStart.dist > 0) {
+        // No pinch-zoom on video items — they have their own controls.
+        if (items[indexRef.current].type === "video") {
+          lastSingle = null;
+          swipeStart = null;
+          return;
+        }
         e.preventDefault();
         const s = clampScale((pinchStart.scale * gap(pt(t[0]), pt(t[1]))) / pinchStart.dist);
         setScale(s);
         if (s <= 1.01) setPos({ x: 0, y: 0 });
-      } else if (t.length === 1 && lastSingle && live.current.scale > 1.01) {
+      } else if (t.length === 1 && lastSingle && live.current.scale > 1.01 && items[indexRef.current].type !== "video") {
         e.preventDefault();
         const p = pt(t[0]);
         const dx = p.x - lastSingle.x;
@@ -119,7 +125,7 @@ export default function Lightbox({ images, index, onNavigate, onClose, alt }) {
             }
           }
           const now = Date.now();
-          if (now - lastTapAt < 320 && Math.abs(dx) < 12 && Math.abs(dy) < 12) {
+          if (now - lastTapAt < 320 && Math.abs(dx) < 12 && Math.abs(dy) < 12 && items[indexRef.current].type !== "video") {
             if (live.current.scale > 1.01) {
               setScale(1);
               setPos({ x: 0, y: 0 });
@@ -139,6 +145,7 @@ export default function Lightbox({ images, index, onNavigate, onClose, alt }) {
     };
 
     const onWheel = (e) => {
+      if (items[indexRef.current].type === "video") return;
       e.preventDefault();
       const s = clampScale(live.current.scale + (e.deltaY < 0 ? 0.35 : -0.35));
       setScale(s);
@@ -166,11 +173,11 @@ export default function Lightbox({ images, index, onNavigate, onClose, alt }) {
       el.removeEventListener("wheel", onWheel);
       el.removeEventListener("click", onClick);
     };
-  }, [images.length]);
+  }, [items.length]);
 
   const goBtn = (e, d) => {
     e.stopPropagation();
-    onNavigate((index + d + images.length) % images.length);
+    onNavigate((index + d + items.length) % items.length);
   };
 
   return (
@@ -178,7 +185,7 @@ export default function Lightbox({ images, index, onNavigate, onClose, alt }) {
       {/* Top bar: counter + close */}
       <div className="absolute top-0 inset-x-0 z-10 flex items-center justify-between px-4 py-3">
         <span className="text-white/70 text-sm tabular-nums">
-          {index + 1} / {images.length}
+          {index + 1} / {items.length}
         </span>
         <button
           onClick={onClose}
@@ -190,7 +197,7 @@ export default function Lightbox({ images, index, onNavigate, onClose, alt }) {
       </div>
 
       {/* Prev / next */}
-      {images.length > 1 && (
+      {items.length > 1 && (
         <>
           <button
             onClick={(e) => goBtn(e, -1)}
@@ -211,13 +218,25 @@ export default function Lightbox({ images, index, onNavigate, onClose, alt }) {
 
       {/* Gesture stage */}
       <div ref={stageRef} className="w-full h-full flex items-center justify-center overflow-hidden px-1" style={{ touchAction: "none" }}>
-        <img
-          src={images[index]}
-          alt={alt}
-          draggable={false}
-          className="max-w-full max-h-full object-contain select-none"
-          style={{ transform: `translate(${pos.x}px, ${pos.y}px) scale(${scale})` }}
-        />
+        {items[index].type === "video" ? (
+          <video
+            src={items[index].src}
+            poster={items[index].poster}
+            controls
+            autoPlay
+            playsInline
+            preload="metadata"
+            className="max-w-full max-h-full object-contain"
+          />
+        ) : (
+          <img
+            src={items[index].src}
+            alt={alt}
+            draggable={false}
+            className="max-w-full max-h-full object-contain select-none"
+            style={{ transform: `translate(${pos.x}px, ${pos.y}px) scale(${scale})` }}
+          />
+        )}
       </div>
 
       {/* Hint */}
