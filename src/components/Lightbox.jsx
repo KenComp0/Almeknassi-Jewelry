@@ -36,16 +36,18 @@ export default function Lightbox({ items, index, onNavigate, onClose, alt }) {
     setPos({ x: 0, y: 0 });
   }, [index]);
 
-  // Lock page scroll + Escape to close.
+  // Lock page scroll + hide top navbar + Escape to close.
   useEffect(() => {
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    document.body.classList.add("lb-open");
     const onKey = (e) => {
       if (e.key === "Escape") closeRef.current();
     };
     window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = prev;
+      document.body.classList.remove("lb-open");
       window.removeEventListener("keydown", onKey);
     };
   }, []);
@@ -182,6 +184,7 @@ export default function Lightbox({ items, index, onNavigate, onClose, alt }) {
 
   return (
     <div className="fixed inset-0 z-[200] bg-black/95" dir="ltr">
+      <style>{`.lb-open .navbar{display:none!important}`}</style>
       {/* Top bar: counter + close */}
       <div className="absolute top-0 inset-x-0 z-10 flex items-center justify-between px-4 py-3">
         <span className="text-white/70 text-sm tabular-nums">

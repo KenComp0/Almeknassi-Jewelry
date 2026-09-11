@@ -1,12 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../i18n/LanguageContext";
+import { useAuth } from "../auth/AuthContext";
+import Lightbox from "./Lightbox";
+import { trackInitiateCheckout } from "../lib/pixel";
+import { saveOrder, saveProfile, confirmOrderOnline, totalsFor, cacheLastOrder } from "../lib/orders";
 
-export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
+export default function OrderModal({ isOpen, onClose, product, qty = 1, onToggleWishlist, wished, promo = null }) {
   const { lang, formatPrice } = useLanguage();
+  const { user, setProfile } = useAuth();
+  const navigate = useNavigate();
   const [form, setForm] = useState({ name: "", phone: "", email: "", address: "", size: "" });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [viewerOpen, setViewerOpen] = useState(false);
+
+  useEffect(() => {
+    if (isOpen && product) trackInitiateCheckout(product, qty);
+  }, [isOpen]);
 
   if (!isOpen || !product) return null;
 
@@ -15,7 +27,6 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
   const t = {
     fr: {
       title: "Finaliser la commande",
-      subtitle: "Remplissez vos informations, nous vous contactons sur WhatsApp",
       product: "Produit",
       qty: "Quantité",
       size: "Taille de bague *",
@@ -35,7 +46,6 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
     },
     en: {
       title: "Complete Order",
-      subtitle: "Fill your details, we will contact you on WhatsApp",
       product: "Product",
       qty: "Quantity",
       size: "Ring size *",
@@ -55,7 +65,6 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
     },
     ar: {
       title: "إتمام الطلب",
-      subtitle: "املأ معلوماتك، سنتواصل معك على واتساب",
       product: "المنتج",
       qty: "الكمية",
       size: "مقاس الخاتم *",
@@ -98,44 +107,67 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
     return Object.keys(e).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (isSubmitting) return;
     if (!validate()) return;
-    // Prevent URL overflow (>1800 chars after encode)
-    const sanitizedName = form.name.trim().slice(0, 80);
-    const sanitizedPhone = form.phone.trim().slice(0, 20);
-    const sanitizedEmail = form.email.trim().slice(0, 100);
-    const sanitizedAddress = form.address.trim().slice(0, 200);
-    const sanitizedSize = form.size;
-    const number = (import.meta.env.VITE_WHATSAPP_NUMBER || "212664677347").replace(/\D/g, "");
-    const priceStr = formatPrice(product.price * qty);
-    let msg = "";
-    if (lang === "fr") {
-      msg = `Bonjour Al Meknassi Bijoux! 👋\n\nJe souhaite commander:\n*${name}* x${qty} - ${priceStr}\nTaille de bague: ${sanitizedSize}\n\n*Mes informations:*\nNom: ${sanitizedName}\nTéléphone: ${sanitizedPhone}\n`;
-      if (sanitizedEmail) msg += `E-mail: ${sanitizedEmail}\n`;
-      msg += `Adresse: ${sanitizedAddress}\n\nMerci de confirmer la disponibilité et la livraison.`;
-    } else if (lang === "ar") {
-      msg = `مرحبا المكناسي! 👋\n\nأرغب في طلب:\n*${name}* x${qty} - ${priceStr}\nمقاس الخاتم: ${sanitizedSize}\n\n*معلوماتي:*\nالاسم: ${sanitizedName}\nالهاتف: ${sanitizedPhone}\n`;
-      if (sanitizedEmail) msg += `البريد: ${sanitizedEmail}\n`;
-      msg += `العنوان: ${sanitizedAddress}\n\nيرجى تأكيد التوفر والتوصيل.`;
-    } else {
-      msg = `Hello Al Meknassi Jewelry! 👋\n\nI would like to order:\n*${name}* x${qty} - ${priceStr}\nRing size: ${sanitizedSize}\n\n*My details:*\nName: ${sanitizedName}\nPhone: ${sanitizedPhone}\n`;
-      if (sanitizedEmail) msg += `E-mail: ${sanitizedEmail}\n`;
-      msg += `Address: ${sanitizedAddress}\n\nPlease confirm availability and delivery.`;
-    }
-    const encoded = encodeURIComponent(msg);
-    if (encoded.length > 1800) {
-      setErrors({ address: "Message trop long" });
-      return;
-    }
+    const profile = {
+      name: form.name.trim().slice(0, 80),
+      phone: form.phone.trim().slice(0, 20),
+      email: form.email.trim().slice(0, 100),
+      address: form.address.trim().slice(0, 200),
+      size: form.size,
+    };
+    const items = [{ id: product.id, name, image: product.images?.[0] || "", price: product.price, qty, size: profile.size }];
+    const { total, subtotal, shipping } = totalsFor(items, promo);
     setIsSubmitting(true);
-    window.open(`https://wa.me/${number}?text=${encoded}`, "_blank", "noopener,noreferrer");
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      const { orderId, orderNumber } = await saveOrder({ user, profile, items, promo, lang });
+      confirmOrderOnline({ orderId, total, qty });
+      if (user) {
+        await saveProfile(user.uid, { ...profile, email: profile.email || user.email || "" });
+        setProfile((p) => ({ ...(p || {}), ...profile }));
+      }
+      cacheLastOrder({
+        orderId,
+        orderNumber,
+        createdAt: new Date().toISOString(),
+        lang,
+        customer: { name: profile.name, phone: profile.phone },
+        items: [{ name, image: product.images?.[0] || "", price: product.price, qty, size: profile.size, ref: "AMK-001" }],
+        subtotal,
+        promo,
+        shipping,
+        total,
+      });
       onClose();
+      navigate(`/merci/${orderId}`, {
+        state: {
+          orderId,
+          orderNumber,
+          createdAt: new Date().toISOString(),
+          lang,
+          customer: { name: profile.name, phone: profile.phone },
+          items: [{ name, image: product.images?.[0] || "", price: product.price, qty, size: profile.size, ref: "AMK-001" }],
+          subtotal,
+          promo,
+          shipping,
+          total,
+        },
+      });
       setForm({ name: "", phone: "", email: "", address: "", size: "" });
-    }, 800);
+    } catch {
+      setErrors({
+        address:
+          lang === "ar"
+            ? "خطأ في الشبكة. حاولوا مجددًا."
+            : lang === "fr"
+            ? "Erreur réseau. Réessayez."
+            : "Network error. Try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -159,9 +191,8 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
           >
             <div className="p-6 md:p-7">
               <div className="flex justify-between items-start gap-4">
-                <div>
+                <div className="flex-1 text-center">
                   <h3 className="font-playfair text-xl md:text-2xl">{t.title}</h3>
-                  <p className="text-xs text-secondary mt-1">{t.subtitle}</p>
                 </div>
                 <button onClick={onClose} className="w-8 h-8 shrink-0 rounded-full border border-gray-300 bg-gray-100 text-gray-900 flex items-center justify-center hover:bg-gray-200">
                   ✕
@@ -169,7 +200,7 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
               </div>
 
               <div className="mt-5 bg-[#FDFBF7] border border-[#E8D5B5] rounded-xl p-3 flex gap-3">
-                <img src="https://i.ibb.co/PvXpdPJ9/587-B720-B-1-B7-A-4-ACF-BF04-EA2-BBD47429-C.webp" alt={name} className="w-24 h-24 object-contain bg-white rounded-lg border border-white p-1" />
+                <img src="https://i.ibb.co/PvXpdPJ9/587-B720-B-1-B7-A-4-ACF-BF04-EA2-BBD47429-C.webp" alt={name} onClick={() => setViewerOpen(true)} className="w-24 h-24 object-contain bg-white rounded-lg border border-white p-1 cursor-zoom-in" />
                 <div className="flex-1 min-w-0">
                   <p className="text-xs tracking-widest uppercase text-[#B8934A]">{product.category}</p>
                   <p className="font-medium text-sm leading-tight truncate">{name}</p>
@@ -253,6 +284,14 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
                   <button type="button" onClick={onClose} disabled={isSubmitting} className="flex-1 border border-border rounded-full py-3.5 text-sm font-medium hover:bg-muted disabled:opacity-50">
                     {t.cancel}
                   </button>
+                  <button
+                    type="button"
+                    onClick={() => onToggleWishlist && onToggleWishlist(product.id)}
+                    aria-label="Wishlist"
+                    className={`w-12 shrink-0 border rounded-full py-3.5 text-lg leading-none flex items-center justify-center ${wished ? "border-[#C9A86A] bg-[#C9A86A]/10 text-[#C9A86A]" : "border-gray-300 text-gray-400 hover:border-gray-400"}`}
+                  >
+                    {wished ? "♥" : "♡"}
+                  </button>
                   <button type="submit" disabled={isSubmitting} className="flex-1 bg-black text-white rounded-full py-3.5 text-sm font-medium tracking-wide hover:bg-[#1a1a1a] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M19.05 4.91A9.9 9.9 0 0 0 12.02 2C6.54 2 2.08 6.46 2.08 11.94c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.77 1.22h.01c5.48 0 9.94-4.46 9.94-9.94 0-2.65-1.03-5.14-2.92-7.03z"/></svg>
                     {isSubmitting ? "..." : t.submit}
@@ -262,6 +301,15 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1 }) {
             </div>
           </motion.div>
         </motion.div>
+      )}
+      {viewerOpen && (
+        <Lightbox
+          items={[{ type: "image", src: "https://i.ibb.co/PvXpdPJ9/587-B720-B-1-B7-A-4-ACF-BF04-EA2-BBD47429-C.webp" }]}
+          index={0}
+          onNavigate={() => {}}
+          onClose={() => setViewerOpen(false)}
+          alt={name}
+        />
       )}
     </AnimatePresence>
   );

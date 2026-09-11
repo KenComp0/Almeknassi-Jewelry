@@ -1,16 +1,57 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { products } from "../data/products";
 import { useLanguage } from "../i18n/LanguageContext";
+import { useAuth } from "../auth/AuthContext";
+import { quickOrderSingle, cacheLastOrder } from "../lib/orders";
 import MarbleBackground from "../components/MarbleBackground";
 import OrderModal from "../components/OrderModal";
 import ProductSchema from "../components/ProductSchema";
 import usePageMeta from "../hooks/usePageMeta";
 
-export default function Home() {
+export default function Home({ onAddToCart, onBuyNow, wishlist = [], onToggleWishlist }) {
   const { lang, t, formatPrice } = useLanguage();
+  const { user, profile, canSkipForm } = useAuth();
+  const navigate = useNavigate();
   const product = products[0];
+  const wished = wishlist.includes(product.id);
+  const [placing, setPlacing] = useState(false);
+
+  // Saved profile? skip the form and order directly.
+  const handleDirectOrder = async () => {
+    if (!(canSkipForm && user)) {
+      setShowOrder(true);
+      return;
+    }
+    if (placing) return;
+    setPlacing(true);
+    try {
+      const res = await quickOrderSingle({ user, profile, product, productName: name, qty: 1, lang, formatPrice });
+      const snap = {
+        orderId: res.orderId,
+        orderNumber: res.orderNumber,
+        createdAt: new Date().toISOString(),
+        lang,
+        customer: { name: profile.name, phone: profile.phone },
+        items: [{ name, image: product.images?.[0] || "", price: product.price, qty: 1, size: profile.size, ref: "AMK-001" }],
+        subtotal: product.price,
+        promo: null,
+        shipping: 0,
+        total: res.total,
+      };
+      cacheLastOrder(snap);
+      navigate(`/merci/${res.orderId}`, { state: snap });
+    } catch {
+      setShowOrder(true);
+    } finally {
+      setPlacing(false);
+    }
+  };
+  const handleBuyNow = () => {
+    if (onBuyNow) onBuyNow(product);
+    navigate("/cart");
+  };
   const name = typeof product.name === "object" ? product.name[lang] : product.name;
   const desc = typeof product.description === "object" ? product.description[lang] : product.description;
   const details = typeof product.details === "object" ? product.details[lang] : product.details;
@@ -112,27 +153,45 @@ export default function Home() {
               </p>
 
               <div className="mt-auto pt-8 space-y-3 relative z-10">
-                <button
-                  onClick={() => setShowOrder(true)}
-                  className="w-full bg-black text-white py-4 text-sm font-medium tracking-[0.14em] uppercase hover:bg-[#1a1a1a] transition-colors flex items-center justify-center gap-2 rounded-full shadow-[0_8px_24px_rgba(0,0,0,0.15)]"
-                >
-                  {lang === "fr" ? "Commander Maintenant" : lang === "ar" ? "اطلب الآن" : "Buy Now"} — {formatPrice(product.price)}
-                </button>
-                <button
-                  onClick={() => setShowOrder(true)}
-                  className="w-full bg-white border border-black text-black py-3.5 text-sm font-medium tracking-[0.12em] uppercase hover:bg-black hover:text-white transition-colors flex items-center justify-center gap-2 rounded-full"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="text-[#25D366]">
-                    <path d="M19.05 4.91A9.9 9.9 0 0 0 12.02 2C6.54 2 2.08 6.46 2.08 11.94c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.77 1.22h.01c5.48 0 9.94-4.46 9.94-9.94 0-2.65-1.03-5.14-2.92-7.03z" />
-                  </svg>
-                  {t("home.orderWhatsapp")}
-                </button>
                 <Link
                   to={`/product/${product.id}`}
                   className="w-full bg-[#D4AF37] text-black py-3 text-xs tracking-widest uppercase hover:bg-[#C9A86A] transition-colors flex items-center justify-center gap-2 rounded-full"
                 >
                   {t("home.viewProduct")} <img src="https://i.ibb.co/MDV7Wbfn/arrow-right.png" alt="" width="14" height="14" loading="lazy" decoding="async" className="w-[14px] h-[14px] object-contain" />
                 </Link>
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    onClick={() => onToggleWishlist && onToggleWishlist(product.id)}
+                    className={`w-full border py-3.5 text-sm font-medium tracking-[0.12em] uppercase transition-colors flex items-center justify-center gap-2 rounded-full ${wished ? "border-[#C9A86A] bg-[#C9A86A]/10 text-[#C9A86A]" : "bg-white border-black text-black hover:bg-black hover:text-white"}`}
+                  >
+                    <span className={wished ? "text-[#C9A86A]" : "text-current"}>{wished ? "♥" : "♡"}</span>
+                    {lang === "fr" ? "Favoris" : lang === "ar" ? "المفضلة" : "Wishlist"}
+                  </button>
+                  <button
+                    onClick={handleBuyNow}
+                    className="w-full bg-black text-white py-3.5 text-sm font-medium tracking-[0.14em] uppercase hover:bg-[#1a1a1a] transition-colors flex items-center justify-center gap-2 rounded-full shadow-[0_8px_24px_rgba(0,0,0,0.15)]"
+                  >
+                    {lang === "fr" ? "Commander Maintenant" : lang === "ar" ? "اطلب الآن" : "Buy Now"}
+                  </button>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    onClick={() => onAddToCart && onAddToCart(product, 1)}
+                    className="w-full bg-white border border-black text-black py-3.5 text-sm font-medium tracking-[0.12em] uppercase hover:bg-black hover:text-white transition-colors flex items-center justify-center gap-2 rounded-full"
+                  >
+                    {lang === "fr" ? "Ajouter au panier" : lang === "ar" ? "أضف للسلة" : "Add to Cart"}
+                  </button>
+                  <button
+                    onClick={handleDirectOrder}
+                    disabled={placing}
+                    className="w-full bg-white border border-black text-black py-3.5 text-sm font-medium tracking-[0.12em] uppercase hover:bg-black hover:text-white transition-colors flex items-center justify-center gap-2 rounded-full disabled:opacity-60"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="text-[#25D366]">
+                      <path d="M19.05 4.91A9.9 9.9 0 0 0 12.02 2C6.54 2 2.08 6.46 2.08 11.94c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.77 1.22h.01c5.48 0 9.94-4.46 9.94-9.94 0-2.65-1.03-5.14-2.92-7.03z" />
+                    </svg>
+                    {t("home.orderWhatsapp")}
+                  </button>
+                </div>
                 <p className="text-xs text-center" style={{ color: "#888" }}>
                   ✓ {t("product.freeShipping")} • {t("cart.cashOnDelivery")}
                 </p>
@@ -146,7 +205,7 @@ export default function Home() {
         </p>
       </div>
       <ProductSchema />
-      <OrderModal isOpen={showOrder} onClose={() => setShowOrder(false)} product={product} qty={1} />
+      <OrderModal isOpen={showOrder} onClose={() => setShowOrder(false)} product={product} qty={1} onToggleWishlist={onToggleWishlist} wished={wished} />
       <style>{`.product-image{transition:transform 0.4s ease}.product-image:hover{transform:scale(1.03)}`}</style>
     </div>
   );

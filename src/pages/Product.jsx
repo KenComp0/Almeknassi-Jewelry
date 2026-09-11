@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { products } from "../data/products";
 import { useLanguage } from "../i18n/LanguageContext";
@@ -7,11 +7,14 @@ import OrderModal from "../components/OrderModal";
 import Lightbox from "../components/Lightbox";
 import ProductSchema from "../components/ProductSchema";
 import usePageMeta from "../hooks/usePageMeta";
+import { trackViewContent } from "../lib/pixel";
 
-export default function Product() {
+export default function Product({ onBuyNow, wishlist = [], onToggleWishlist }) {
   const { id } = useParams();
   const { lang, formatPrice } = useLanguage();
+  const navigate = useNavigate();
   const product = products.find((p) => p.id === (id || "1")) || products[0];
+  const wished = wishlist.includes(product.id);
   const name = typeof product.name === "object" ? product.name[lang] : product.name;
   const [showOrder, setShowOrder] = useState(false);
   const [lightbox, setLightbox] = useState(-1);
@@ -43,6 +46,16 @@ export default function Product() {
     window.addEventListener("open-order", open);
     return () => window.removeEventListener("open-order", open);
   }, []);
+
+  useEffect(() => {
+    trackViewContent(product);
+  }, []);
+
+  // All order buttons: ensure the set is in the cart (once), then go there.
+  const handleBuyNow = () => {
+    if (onBuyNow) onBuyNow(product);
+    navigate("/cart");
+  };
 
   const tFunnel = {
     fr: {
@@ -224,7 +237,7 @@ export default function Product() {
           <h2 className="font-playfair text-xl mt-5 text-[#C9A86A] text-center">{tFunnel.sec2_title}</h2>
           <p className="text-secondary text-sm mt-2 max-w-xl mx-auto text-center">{tFunnel.sec2_desc}</p>
           <div className="text-center mb-8 pb-2">
-            <button onClick={() => setShowOrder(true)} className="mt-4 bg-transparent border border-[#C9A86A] text-[#C9A86A] px-8 py-2.5 rounded-full text-sm hover:bg-[#C9A86A] hover:text-black inline-block">
+            <button onClick={handleBuyNow} className="mt-4 bg-transparent border border-[#C9A86A] text-[#C9A86A] px-8 py-2.5 rounded-full text-sm hover:bg-[#C9A86A] hover:text-black inline-block">
               {tFunnel.sec2_cta}
             </button>
           </div>
@@ -242,7 +255,7 @@ export default function Product() {
           <p className="mt-3 text-sm font-medium tracking-wide">{tFunnel.sec1_list}</p>
           <p className="mt-2 text-sm">{tFunnel.sec1_box}</p>
           <p className="mt-3 text-lg font-semibold">{tFunnel.sec1_price} <span className="text-sm font-normal text-secondary">({formatPrice(product.price)})</span></p>
-          <button onClick={() => setShowOrder(true)} className="mt-6 w-full md:w-auto bg-[#C9A86A] text-black px-10 py-4 rounded-full text-sm tracking-widest uppercase hover:bg-[#B8934A] shadow-lg">
+          <button onClick={handleBuyNow} className="mt-6 w-full md:w-auto bg-[#C9A86A] text-black px-10 py-4 rounded-full text-sm tracking-widest uppercase hover:bg-[#B8934A] shadow-lg">
             {tFunnel.sec1_cta}
           </button>
         </div>
@@ -370,7 +383,7 @@ export default function Product() {
               <li key={b}>{b}</li>
             ))}
           </ul>
-          <button onClick={() => setShowOrder(true)} className="mt-6 w-full bg-black text-white py-4 rounded-full text-base font-medium tracking-widest uppercase hover:bg-[#1a1a1a] shadow-xl">
+          <button onClick={handleBuyNow} className="mt-6 w-full bg-black text-white py-4 rounded-full text-base font-medium tracking-widest uppercase hover:bg-[#1a1a1a] shadow-xl">
             {tFunnel.sec11_cta}
           </button>
           <p className="text-xs text-secondary mt-3">Paiement à la livraison • Vérifie avant de payer</p>
@@ -384,7 +397,7 @@ export default function Product() {
       {!showOrder && (
       <div className="fixed bottom-24 md:bottom-5 right-5 z-40 flex flex-col items-center gap-1.5">
         <button
-          onClick={() => setShowOrder(true)}
+          onClick={handleBuyNow}
           aria-label="Commander"
           className="w-14 h-14 bg-black rounded-full flex items-center justify-center shadow-[0_6px_20px_rgba(0,0,0,0.2)] hover:scale-105 transition-transform"
         >
@@ -401,7 +414,7 @@ export default function Product() {
       </div>
       )}
       {/* Overlays live at root level so header/nav never paint above them */}
-      <OrderModal isOpen={showOrder} onClose={() => setShowOrder(false)} product={product} qty={1} />
+      <OrderModal isOpen={showOrder} onClose={() => setShowOrder(false)} product={product} qty={1} onToggleWishlist={onToggleWishlist} wished={wished} />
       {lightbox >= 0 && (
         <Lightbox items={gallery} index={lightbox} onNavigate={setLightbox} onClose={() => setLightbox(-1)} alt={name} />
       )}
