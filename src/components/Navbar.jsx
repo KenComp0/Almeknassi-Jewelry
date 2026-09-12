@@ -71,6 +71,9 @@ export default function Navbar({ cartCount = 0, wishlistCount = 0 }) {
           <NavLink to="/" className={linkClass}>
             {t("nav.home")}
           </NavLink>
+          <NavLink to="/about" className={linkClass}>
+            {lang === "fr" ? "À propos" : lang === "ar" ? "من نحن" : "About"}
+          </NavLink>
           <NavLink to="/" className={linkClass}>
             {t("nav.shop")}
           </NavLink>
@@ -155,6 +158,9 @@ export default function Navbar({ cartCount = 0, wishlistCount = 0 }) {
             <nav className="container-luxury py-6 flex flex-col gap-4">
               <NavLink to="/" className="text-sm py-2 border-b border-white/10 text-white">
                 {t("nav.home")}
+              </NavLink>
+              <NavLink to="/about" className="text-sm py-2 border-b border-white/10 text-white">
+                {lang === "fr" ? "À propos" : lang === "ar" ? "من نحن" : "About"}
               </NavLink>
               <NavLink to="/" className="text-sm py-2 border-b border-white/10 text-white">
                 {t("nav.shop")}

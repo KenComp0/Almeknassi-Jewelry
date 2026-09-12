@@ -14,6 +14,8 @@ const Home = lazy(() => import("./pages/Home"));
 const Product = lazy(() => import("./pages/Product"));
 const Cart = lazy(() => import("./pages/Cart"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const About = lazy(() => import("./pages/About"));
+const Story = lazy(() => import("./pages/Story"));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -90,6 +92,8 @@ function AppContent() {
               <Route path="/product/:id" element={<Product onBuyNow={handleBuyNow} wishlist={wishlist} onToggleWishlist={handleToggleWishlist} />} />
               <Route path="/cart" element={<Cart cart={cart} onUpdateQty={handleUpdateQty} onRemove={handleRemove} onAddToCart={handleAddToCart} wishlist={wishlist} onToggleWishlist={handleToggleWishlist} />} />
               <Route path="/merci/:orderId" element={<Merci />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/about/story" element={<Story />} />
               <Route path="/admin" element={<Dashboard />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
