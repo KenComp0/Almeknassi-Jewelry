@@ -9,7 +9,8 @@
 - Languages: French (main), English, Arabic (RTL)
 - Payment: cash on delivery — check the parcel before paying, pay only if satisfied
 - Delivery: all over Morocco, free delivery on the featured set
-- Ordering: via the order form on the site, confirmed over WhatsApp
+- Ordering: online as guest or with an account, cash on delivery, confirmed by phone call
+- Accounts: optional; saved name/phone/address/ring-size skip the form on next orders
 
 ## Featured product
 
@@ -23,6 +24,7 @@
 
 - Home: https://almeknassi.com/
 - Featured set: https://almeknassi.com/product/1
+- Cart: https://almeknassi.com/cart
 - TikTok: https://www.tiktok.com/@almeknassi20
 - Instagram: https://www.instagram.com/almeknassi1?igsi=ZDNlZDc0MzIxNw==
 - Facebook: https://www.facebook.com/share/195AwDmTGq/

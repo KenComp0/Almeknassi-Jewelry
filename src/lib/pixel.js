@@ -4,8 +4,21 @@
 const PIXEL_ID = "1413003790769694";
 let bootstrapped = false;
 
+// Real-customer traffic only: the pixel stays completely silent anywhere else
+// (localhost, previews, IPs), so test visits never pollute Meta's data.
+const LIVE_HOSTS = ["almeknassi.com", "www.almeknassi.com"];
+
+export function isLiveSite() {
+  if (typeof window === "undefined") return false;
+  return LIVE_HOSTS.includes(window.location.hostname);
+}
+
 export function initPixel() {
   if (typeof window === "undefined" || bootstrapped) return;
+  if (!isLiveSite()) {
+    if (import.meta.env.DEV) console.debug("[pixel] loader skipped on", window.location.hostname);
+    return;
+  }
   bootstrapped = true;
   !(function (f, b, e, v, n, t, s) {
     if (f.fbq) return;
@@ -27,7 +40,13 @@ export function initPixel() {
 }
 
 export function fbq(...args) {
-  if (typeof window !== "undefined" && typeof window.fbq === "function") {
+  if (typeof window === "undefined") return;
+  // Second lock: even if a call slips past init, nothing leaves non-live hosts.
+  if (!isLiveSite()) {
+    if (import.meta.env.DEV) console.debug("[pixel] dropped", args.slice(0, 2).join(":"), "on", window.location.hostname);
+    return;
+  }
+  if (typeof window.fbq === "function") {
     window.fbq(...args);
   }
 }

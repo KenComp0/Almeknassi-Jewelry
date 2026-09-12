@@ -35,8 +35,11 @@ export function AuthProvider({ children }) {
             await setDoc(ref, { ...base, createdAt: serverTimestamp() });
             setProfile({ ...base });
           } else {
-            await setDoc(ref, base, { merge: true });
-            setProfile({ ...snap.data(), ...base });
+            const data = snap.data();
+            // Backfill createdAt for docs born from the signup race (keeps them queryable).
+            const patch = data.createdAt ? base : { ...base, createdAt: serverTimestamp() };
+            await setDoc(ref, patch, { merge: true });
+            setProfile({ ...data, ...patch });
           }
         } catch {
           setProfile(null);
