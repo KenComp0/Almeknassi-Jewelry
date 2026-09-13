@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useLanguage } from "../i18n/LanguageContext";
 
 export default function Footer() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   return (
     <footer className="bg-[#0A0A0A] text-white border-t border-white/10">
       {/* Trust bar */}
@@ -55,6 +55,11 @@ export default function Footer() {
               <li>
                 <Link to="/" className="hover:text-[#C9A86A]">
                   {t("nav.shop")}
+                </Link>
+              </li>
+              <li>
+                <Link to="/about" className="hover:text-[#C9A86A]">
+                  {lang === "fr" ? "À propos" : lang === "ar" ? "من نحن" : "About"}
                 </Link>
               </li>
             </ul>
