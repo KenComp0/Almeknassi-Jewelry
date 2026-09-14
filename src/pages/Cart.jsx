@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { products } from "../data/products";
 import { useLanguage } from "../i18n/LanguageContext";
 import { useAuth } from "../auth/AuthContext";
 import { db } from "../lib/firebase";
-import { saveOrder, saveProfile, confirmOrderOnline, totalsFor, cacheLastOrder } from "../lib/orders";
+import { saveOrder, saveProfile, confirmOrderOnline, totalsFor, cacheLastOrder, newOrderKey } from "../lib/orders";
 import usePageMeta from "../hooks/usePageMeta";
 
 const SIZES = ["6", "7", "8", "9", "10"];
@@ -21,6 +21,12 @@ export default function Cart({ cart, onUpdateQty, onRemove, onAddToCart, wishlis
   const [promoBusy, setPromoBusy] = useState(false);
 
   const [showForm, setShowForm] = useState(false);
+  // One stamp per form opening: retries reuse it, a fresh opening mints anew.
+  const [orderKey, setOrderKey] = useState(null);
+
+  useEffect(() => {
+    if (showForm) setOrderKey(newOrderKey());
+  }, [showForm]);
   const [form, setForm] = useState({ name: "", phone: "", email: "", address: "", size: "" });
   const [errors, setErrors] = useState({});
   const [placing, setPlacing] = useState(false);
@@ -248,7 +254,7 @@ export default function Cart({ cart, onUpdateQty, onRemove, onAddToCart, wishlis
         size: form.size,
       };
       const items = cartItemsForOrder();
-      const saved = await saveOrder({ user, profile: prof, items, promo, lang });
+      const saved = await saveOrder({ user, profile: prof, items, promo, lang, idemKey: orderKey });
       confirmOrderOnline({ orderId: saved.orderId, total: saved.total, qty: cart.reduce((s, i) => s + i.qty, 0) });
       if (user) {
         await saveProfile(user.uid, { ...prof, email: prof.email || user.email || "" });

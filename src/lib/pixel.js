@@ -83,6 +83,8 @@ export const trackAddToCart = (p, qty = 1) =>
   });
 
 // ONLY call after the order is confirmed saved (Firebase success).
+// eventID = the order's unique stamp: Meta drops any second browser event
+// carrying an eventID it already saw (dedup, incl. future CAPI pairing).
 export const trackPurchase = ({ orderId, value, currency = "MAD", qty = 1 }) =>
   fbq("track", "Purchase", {
     content_ids: ["1"],
@@ -91,4 +93,4 @@ export const trackPurchase = ({ orderId, value, currency = "MAD", qty = 1 }) =>
     value,
     currency,
     num_items: qty,
-  });
+  }, { eventID: orderId });

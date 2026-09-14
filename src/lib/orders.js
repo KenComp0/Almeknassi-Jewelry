@@ -1,6 +1,6 @@
 // Order pipeline: save to Firestore → Pixel Purchase → WhatsApp link.
 // Purchase is ONLY tracked after a confirmed Firestore write.
-import { collection, addDoc, serverTimestamp, doc, setDoc, runTransaction } from "firebase/firestore";
+import { serverTimestamp, doc, setDoc, runTransaction } from "firebase/firestore";
 import { db } from "./firebase";
 import { trackPurchase } from "./pixel";
 
@@ -49,10 +49,25 @@ export function saveProfile(uid, profile) {
   );
 }
 
-export async function saveOrder({ user, profile, items, promo, lang }) {
+// Unique stamp minted client-side, before any write.
+export function newOrderKey() {
+  try {
+    if (typeof crypto !== "undefined" && crypto.randomUUID) return crypto.randomUUID();
+  } catch {
+    /* fallback below */
+  }
+  return `k-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+}
+
+export async function saveOrder({ user, profile, items, promo, lang, idemKey }) {
+  // Idempotency stamp: created BEFORE the write. A retry carrying the same
+  // stamp overwrites the same document instead of creating a second order.
+  const key = idemKey || newOrderKey();
   const { subtotal, percent, total, shipping, grandTotal } = totalsFor(items, promo);
   const orderNumber = await nextOrderNumber();
-  const ref = await addDoc(collection(db, "orders"), {
+  // Overwrite (not add): same stamp twice = one document, never two orders.
+  const ref = doc(db, "orders", key);
+  await setDoc(ref, {
     orderNumber,
     userId: user ? user.uid : null,
     email: profile.email || (user?.email ?? ""),
@@ -82,8 +97,15 @@ export async function saveOrder({ user, profile, items, promo, lang }) {
   return { orderId: ref.id, orderNumber, subtotal, total: grandTotal, percent };
 }
 
+const firedPurchases = new Set();
+
 export function confirmOrderOnline({ orderId, total, qty }) {
+  // Second lock: same order ID can never fire Purchase twice per session,
+  // even if the code path is reached again (retry, double render, revisit).
+  if (!orderId || firedPurchases.has(orderId)) return false;
+  firedPurchases.add(orderId);
   trackPurchase({ orderId, value: total, qty });
+  return true;
 }
 
 export function openWhatsApp(message) {

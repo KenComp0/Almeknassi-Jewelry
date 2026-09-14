@@ -5,7 +5,7 @@ import { useLanguage } from "../i18n/LanguageContext";
 import { useAuth } from "../auth/AuthContext";
 import Lightbox from "./Lightbox";
 import { trackInitiateCheckout } from "../lib/pixel";
-import { saveOrder, saveProfile, confirmOrderOnline, totalsFor, cacheLastOrder } from "../lib/orders";
+import { saveOrder, saveProfile, confirmOrderOnline, totalsFor, cacheLastOrder, newOrderKey } from "../lib/orders";
 
 export default function OrderModal({ isOpen, onClose, product, qty = 1, onToggleWishlist, wished, promo = null }) {
   const { lang, formatPrice } = useLanguage();
@@ -15,6 +15,13 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1, onToggle
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [viewerOpen, setViewerOpen] = useState(false);
+  // One stamp per form opening: retries while open reuse it (no duplicates),
+  // closing + reopening mints a fresh one (a genuinely new order).
+  const [orderKey, setOrderKey] = useState(null);
+
+  useEffect(() => {
+    if (isOpen) setOrderKey(newOrderKey());
+  }, [isOpen]);
 
   useEffect(() => {
     if (isOpen && product) trackInitiateCheckout(product, qty);
@@ -122,7 +129,7 @@ export default function OrderModal({ isOpen, onClose, product, qty = 1, onToggle
     const { total, subtotal, shipping } = totalsFor(items, promo);
     setIsSubmitting(true);
     try {
-      const { orderId, orderNumber } = await saveOrder({ user, profile, items, promo, lang });
+      const { orderId, orderNumber } = await saveOrder({ user, profile, items, promo, lang, idemKey: orderKey });
       confirmOrderOnline({ orderId, total, qty });
       if (user) {
         await saveProfile(user.uid, { ...profile, email: profile.email || user.email || "" });
