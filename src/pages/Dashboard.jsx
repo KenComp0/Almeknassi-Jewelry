@@ -141,12 +141,8 @@ export default function Dashboard() {
     );
   }
 
-  const todayStr = new Date().toDateString();
-  const todayOrders = orders.filter((o) => {
-    const d = o.createdAt?.toDate ? o.createdAt.toDate() : new Date(o.createdAt);
-    return d && d.toDateString() === todayStr;
-  });
-  const todayRevenue = todayOrders.reduce((s, o) => s + (Number(o.total) || 0), 0);
+  const confirmedOrders = orders.filter((o) => o.status === "confirmed");
+  const confirmedRevenue = confirmedOrders.reduce((s, o) => s + (Number(o.total) || 0), 0);
   const newCount = orders.filter((o) => o.status === "new").length;
 
   const fmtDate = (v) => {
@@ -173,7 +169,7 @@ export default function Dashboard() {
         <div className="grid grid-cols-3 gap-3 mt-6">
           {[
             { label: "New orders", value: newCount },
-            { label: "Today revenue", value: `${todayRevenue} MAD` },
+            { label: "Confirmed revenue", value: `${confirmedRevenue} MAD` },
             { label: "Total orders", value: orders.length },
           ].map((s) => (
             <div key={s.label} className="bg-[#111] border border-[#C9A86A]/30 rounded-2xl p-4 text-center">
