@@ -12,7 +12,9 @@ import Merci from "./pages/Merci";
 import { initPixel, trackPageView, trackAddToCart } from "./lib/pixel";
 const Home = lazy(() => import("./pages/Home"));
 const Product = lazy(() => import("./pages/Product"));
+const ProdDetail = lazy(() => import("./pages/ProdDetail"));
 const Cart = lazy(() => import("./pages/Cart"));
+const Shop = lazy(() => import("./pages/Shop"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const About = lazy(() => import("./pages/About"));
 const Story = lazy(() => import("./pages/Story"));
@@ -66,10 +68,18 @@ function AppContent() {
   const handleToggleWishlist = (id) => {
     setWishlist((prev) => (prev.includes(id) ? prev.filter((w) => w !== id) : [...prev, id]));
   };
-  // Buy-now: add only if not already in cart (no qty change otherwise).
+  // Buy-now: add product with selected size and quantity
   const handleBuyNow = (product) => {
-    setCart((prev) => (prev.some((p) => p.id === product.id) ? prev : [...prev, { ...product, qty: 1 }]));
-    trackAddToCart(product, 1);
+    const size = product.selectedSize || "";
+    const qty = Number(product.quantity) || 1;
+    setCart((prev) => {
+      const existing = prev.find((p) => p.id === product.id && p.selectedSize === size);
+      if (existing) {
+        return prev.map((p) => (p.id === product.id && p.selectedSize === size ? { ...p, qty: p.qty + qty } : p));
+      }
+      return [...prev, { ...product, qty, selectedSize: size }];
+    });
+    trackAddToCart(product, qty);
   };
   const cartCount = cart.reduce((sum, p) => sum + p.qty, 0);
 
@@ -89,7 +99,9 @@ function AppContent() {
             <Routes>
               <Route path="/" element={<Home onAddToCart={handleAddToCart} onBuyNow={handleBuyNow} wishlist={wishlist} onToggleWishlist={handleToggleWishlist} />} />
               <Route path="/collection" element={<Navigate to="/" replace />} />
+              <Route path="/shop" element={<Shop />} />
               <Route path="/product/:id" element={<Product onBuyNow={handleBuyNow} wishlist={wishlist} onToggleWishlist={handleToggleWishlist} />} />
+              <Route path="/prod/:id" element={<ProdDetail onBuyNow={handleBuyNow} wishlist={wishlist} onToggleWishlist={handleToggleWishlist} />} />
               <Route path="/cart" element={<Cart cart={cart} onUpdateQty={handleUpdateQty} onRemove={handleRemove} onAddToCart={handleAddToCart} wishlist={wishlist} onToggleWishlist={handleToggleWishlist} />} />
               <Route path="/merci/:orderId" element={<Merci />} />
               <Route path="/about" element={<About />} />

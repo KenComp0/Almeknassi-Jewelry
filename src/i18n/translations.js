@@ -17,6 +17,13 @@ export const translations = {
       orderWhatsapp: "Commander sur WhatsApp",
       discover: "Découvrir",
     },
+    shop: {
+      title: "Notre Collection",
+      description: "Découvrez l'ensemble de nos créations, chacune façonnée avec passion pour sublimer votre élégance.",
+      heroBadge: "Produit Vedette",
+      viewProduct: "Voir le Produit",
+      empty: "Aucun produit pour le moment.",
+    },
     product: {
       inStock: "En Stock",
       reviews: "avis",
@@ -93,6 +100,13 @@ export const translations = {
       orderWhatsapp: "Order on WhatsApp",
       discover: "Discover",
     },
+    shop: {
+      title: "Our Collection",
+      description: "Discover all our creations, each crafted with passion to elevate your elegance.",
+      heroBadge: "Hero Product",
+      viewProduct: "View Product",
+      empty: "No products available yet.",
+    },
     product: {
       inStock: "In Stock",
       reviews: "reviews",
@@ -168,6 +182,13 @@ export const translations = {
       viewProduct: "عرض المنتج",
       orderWhatsapp: "اطلب عبر واتساب",
       discover: "اكتشف",
+    },
+    shop: {
+      title: "مجموعتنا",
+      description: "اكتشف جميع إبداعاتنا، كل قطعة صُنعت بشغف لتكمل أناقتك.",
+      heroBadge: "المنتج المميز",
+      viewProduct: "عرض المنتج",
+      empty: "لا توجد منتجات حالياً.",
     },
     product: {
       inStock: "متوفر",

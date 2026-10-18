@@ -177,16 +177,17 @@ export default function Cart({ cart, onUpdateQty, onRemove, onAddToCart, wishlis
       image: it.images?.[0] || "",
       price: Number(it.price),
       qty: Number(it.qty),
+      size: it.selectedSize || it.size || "",
     }));
 
-  const goMerci = (saved, prof, size) => {
+  const goMerci = (saved, prof) => {
     const snap = {
       orderId: saved.orderId,
       orderNumber: saved.orderNumber,
       createdAt: new Date().toISOString(),
       lang,
       customer: { name: prof.name, phone: prof.phone },
-      items: cartItemsForOrder().map((it) => ({ ...it, size, ref: "AMK-001" })),
+      items: cartItemsForOrder(),
       subtotal,
       promo,
       shipping,
@@ -205,7 +206,7 @@ export default function Cart({ cart, onUpdateQty, onRemove, onAddToCart, wishlis
       const saved = await saveOrder({ user, profile: prof, items, promo, lang });
       confirmOrderOnline({ orderId: saved.orderId, total: saved.total, qty: cart.reduce((s, i) => s + i.qty, 0) });
       await saveProfile(user.uid, {});
-      goMerci(saved, prof, prof.size);
+      goMerci(saved, prof);
     } catch {
       setErrors({ address: txt.netErr });
     } finally {
@@ -255,7 +256,7 @@ export default function Cart({ cart, onUpdateQty, onRemove, onAddToCart, wishlis
       }
       setForm({ name: "", phone: "", email: "", address: "", size: "" });
       setShowForm(false);
-      goMerci(saved, prof, prof.size);
+      goMerci(saved, prof);
     } catch {
       setErrors({ address: txt.netErr });
     } finally {
@@ -348,6 +349,7 @@ export default function Cart({ cart, onUpdateQty, onRemove, onAddToCart, wishlis
                       <h3 className="font-medium text-[15px] leading-tight truncate pr-2">{nm}</h3>
                     </Link>
                     <p className="text-xs tracking-widest uppercase text-white/40 mt-1">{item.category}</p>
+                    {item.selectedSize && <p className="text-xs text-[#C9A86A] mt-1">Taille: {item.selectedSize}</p>}
                     <p className="text-sm font-semibold mt-2">{formatPrice(item.price)}</p>
                     <div className="flex items-center gap-3 mt-3">
                       <div className="flex items-center border border-white/15 bg-black rounded-full">

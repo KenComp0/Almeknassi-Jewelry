@@ -1,0 +1,43 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{db}/documents {
+    function isAdmin() {
+      return request.auth != null
+        && get(/databases/$(db)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+    }
+    match /users/{uid} {
+      allow read: if request.auth != null && (request.auth.uid == uid || isAdmin());
+      allow create: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.get('isAdmin', false) == false;
+      allow update: if request.auth != null && (request.auth.uid == uid || isAdmin())
+        && (isAdmin() || request.resource.data.get('isAdmin', resource.data.get('isAdmin', false)) == resource.data.get('isAdmin', false));
+    }
+    match /orders/{id} {
+      allow create: if true;
+      allow read: if isAdmin() || (request.auth != null && resource.data.userId == request.auth.uid);
+      allow update: if isAdmin()
+        || (resource.data.userId == null && request.resource.data.userId == null);
+    }
+    match /promoCodes/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /counters/{id} {
+      allow read: if true;
+      allow write: if true;
+    }
+    match /products/{id} {
+      allow read: if resource.data.active == true || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+    match /stockMovements/{id} {
+      allow read: if isAdmin();
+      allow create: if isAdmin();
+    }
+    match /auditLogs/{id} {
+      allow read: if isAdmin();
+      allow create: if isAdmin();
+      allow delete: if false;
+    }
+  }
+}
