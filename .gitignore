@@ -37,3 +37,6 @@ Desktop.ini
 .netlify
 
 .playwright-mcp/
+
+# Firestore rules (deployed via Firebase Console)
+firestore.rules
